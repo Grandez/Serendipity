@@ -1,0 +1,1551 @@
+package com.jgg.sdp.parser.lang;
+
+import java_cup.runtime.*;
+
+import com.jgg.sdp.module.base.*;
+import com.jgg.sdp.module.items.*;
+import com.jgg.sdp.module.factorias.*;
+import com.jgg.sdp.core.ctes.*;
+import com.jgg.sdp.core.config.*;
+import com.jgg.sdp.core.exceptions.*;
+import com.jgg.sdp.parser.info.*;
+import com.jgg.sdp.parser.base.*;
+import com.jgg.sdp.parser.work.*;
+import com.jgg.sdp.parser.code.*;
+
+parser code {:
+      String fullName   = ((ILexer) getScanner()).getFullName();
+      Module module     = ModulesFactory.getModule(fullName);
+      Summary summary   = module.getSummary();
+      Configuration cfg = Configuration.getInstance();
+          
+      public String getFullName() { return fullName; }
+
+      public void syntax_error(Symbol token) {
+          Symbol s = (Symbol) token.value;
+          int col = cfg.getInteger(CFG.MARGIN_LEFT,  0);
+          col = col + s.right + 1;
+
+          throw new ParseException(MSG.EXCEPTION_SYNTAX, 
+                                   module.getName(), 
+                                   s.left + 1, 
+                                   col, 
+                                   (String) s.value);
+      }
+
+      public void unrecovered_syntax_error(Symbol token) throws Exception {
+          Symbol s = (Symbol) token.value;
+          throw new ParseException(MSG.EXCEPTION_CUP, 
+                                  module.getName(), s.left + 1, s.right + 1, (String) s.value); 
+      }
+
+:}
+
+action code {:
+   Module      module   = null;
+   Persistence fichero  = null;
+   SQLCode     code     = null;
+      
+   public void initActionClass(String name) {
+      module = ModulesFactory.getModule(name);
+      code = new SQLCode(module);
+   }
+
+   public String getSymbolName(Symbol s)    { return (String) s.value; }
+
+
+   public void debug(String txt) { System.err.println(txt); }
+:}
+
+init with {:
+  action_obj.initActionClass(fullName);
+:}
+
+scan with {:
+    Symbol sym = ((GenericScanner) getScanner()).tokenSQL();
+    return (sym!=null) ? sym : getSymbolFactory().newSymbol("END_OF_FILE",EOF_sym());
+:}
+
+
+/****************************************************************************/
+/****************************************************************************/
+/*               LOS SIMBOLOS SON COMUNES                                   */
+/****************************************************************************/
+/****************************************************************************/
+
+terminal Symbol NADA  ;
+
+terminal Symbol A_SET                             ;
+terminal Symbol ABS                               ; 
+terminal Symbol ABSOLUTE                          ;
+terminal Symbol ACTION                            ;
+terminal Symbol ADA                               ;
+terminal Symbol ADD                               ;
+terminal Symbol ADMIN                             ;
+terminal Symbol AFTER                             ;
+terminal Symbol ALL                               ;
+terminal Symbol ALLOCATE                          ;
+terminal Symbol ALTER                             ;
+terminal Symbol ALWAYS                            ;
+terminal Symbol AND                               ;
+terminal Symbol ANY                               ;
+terminal Symbol ARE                               ;
+terminal Symbol ARRAY                             ;
+terminal Symbol AS                                ;
+terminal Symbol ASC                               ;
+terminal Symbol ASENSITIVE                        ;
+terminal Symbol ASSERTION                         ;
+terminal Symbol ASSIGNMENT                        ;
+terminal Symbol ASYMMETRIC                        ;
+terminal Symbol AT                                ;
+terminal Symbol ATOMIC                            ;
+terminal Symbol ATTRIBUTE                         ;
+terminal Symbol ATTRIBUTES                        ;
+terminal Symbol AUTHORIZATION                     ;
+terminal Symbol AUTO                              ;
+terminal Symbol AVG                               ;
+terminal Symbol BEFORE                            ;
+terminal Symbol BEGIN                             ;
+terminal Symbol BERNOULLI                         ;
+terminal Symbol BETWEEN                           ;
+terminal Symbol BIGINT                            ;
+terminal Symbol BIN                               ;
+terminal Symbol BINARY                            ;
+terminal Symbol BLOB                              ;
+terminal Symbol BOOLEAN                           ;
+terminal Symbol BOTH                              ;
+terminal Symbol BREADTH                           ;
+terminal Symbol BY                                ;
+terminal Symbol C                                 ;
+terminal Symbol CALL                              ;
+terminal Symbol CALLED                            ;
+terminal Symbol CALLER                            ;
+terminal Symbol CARDINALITY                       ;
+terminal Symbol CASCADE                           ;
+terminal Symbol CASCADED                          ;
+terminal Symbol CASE                              ;
+terminal Symbol CAST                              ;
+terminal Symbol CATALOG                           ;
+terminal Symbol CATALOG_NAME                      ;
+terminal Symbol CEIL                              ;
+terminal Symbol CEILING                           ;
+terminal Symbol CHAIN                             ;
+terminal Symbol CHAR                              ;
+terminal Symbol CHARACTER                         ;
+terminal Symbol CHARACTERISTICS                   ;
+terminal Symbol CHARACTERS                        ;
+terminal Symbol CHARACTER_LENGTH                  ;
+terminal Symbol CHARACTER_SET_CATALOG             ;
+terminal Symbol CHARACTER_SET_NAME                ;
+terminal Symbol CHARACTER_SET_SCHEMA              ;
+terminal Symbol CHAR_LENGTH                       ;
+terminal Symbol CHECK                             ;
+terminal Symbol CHECKED                           ;
+terminal Symbol CLASS_ORIGIN                      ;
+terminal Symbol CLIENT                            ;
+terminal Symbol CLOB                              ;
+terminal Symbol CLOSE                             ;
+terminal Symbol COALESCE                          ;
+terminal Symbol COBOL                             ;
+terminal Symbol CODE_UNITS                        ;
+terminal Symbol COLLATE                           ;
+terminal Symbol COLLATION                         ;
+terminal Symbol COLLATION_CATALOG                 ;
+terminal Symbol COLLATION_NAME                    ;
+terminal Symbol COLLATION_SCHEMA                  ;
+terminal Symbol COLLECT                           ;
+terminal Symbol COLUMN                            ;
+terminal Symbol COLUMN_NAME                       ;
+terminal Symbol COMMAND_FUNCTION                  ;
+terminal Symbol COMMAND_FUNCTION_CODE             ;
+terminal Symbol COMMIT                            ;
+terminal Symbol COMMITTED                         ;
+terminal Symbol CONDITION                         ;
+terminal Symbol CONDITION_NUMBER                  ;
+terminal Symbol CONNECT                           ;
+terminal Symbol CONNECTION                        ;
+terminal Symbol CONNECTION_NAME                   ;
+terminal Symbol CONST                             ;
+terminal Symbol CONSTRAINT                        ;
+terminal Symbol CONSTRAINTS                       ;
+terminal Symbol CONSTRAINT_CATALOG                ;
+terminal Symbol CONSTRAINT_NAME                   ;
+terminal Symbol CONSTRAINT_SCHEMA                 ;
+terminal Symbol CONSTRUCTOR                       ;
+terminal Symbol CONSTRUCTORS                      ;
+terminal Symbol CONTAINS                          ;
+terminal Symbol CONTINUE                          ;
+terminal Symbol CONVERT                           ;
+terminal Symbol CORR                              ;
+terminal Symbol CORRESPONDING                     ;
+terminal Symbol COUNT                             ;
+terminal Symbol COVAR_POP                         ;
+terminal Symbol COVAR_SAMP                        ;
+terminal Symbol CREATE                            ;
+terminal Symbol CROSS                             ;
+terminal Symbol CUBE                              ;
+terminal Symbol CUME_DIST                         ;
+terminal Symbol CURRENT                           ;
+terminal Symbol CURRENT_COLLATION                 ;
+terminal Symbol CURRENT_DATE                      ;
+terminal Symbol CURRENT_DEFAULT_TRANSFORM_GROUP   ;
+terminal Symbol CURRENT_PATH                      ;
+terminal Symbol CURRENT_ROLE                      ;
+terminal Symbol CURRENT_TIME                      ;
+terminal Symbol CURRENT_TIMESTAMP                 ;
+terminal Symbol CURRENT_TRANSFORM_GROUP_FOR_TYPE  ;
+terminal Symbol CURRENT_USER                      ;
+terminal Symbol CURSOR                            ;
+terminal Symbol CURSOR_NAME                       ;
+terminal Symbol CYCLE                             ;
+terminal Symbol DATA                              ;
+terminal Symbol DATE                              ;
+terminal Symbol DATETIME_INTERVAL_CODE            ;
+terminal Symbol DATETIME_INTERVAL_PRECISION       ;
+terminal Symbol DAY                               ;
+terminal Symbol DCL                               ;
+terminal Symbol DEALLOCATE                        ;
+terminal Symbol DEC                               ;
+terminal Symbol DECIMAL                           ;
+terminal Symbol DECLARE                           ;
+terminal Symbol DEFAULT                           ;
+terminal Symbol DEFAULTS                          ;
+terminal Symbol DEFERRABLE                        ;
+terminal Symbol DEFERRED                          ;
+terminal Symbol DEFINED                           ;
+terminal Symbol DEFINER                           ;
+terminal Symbol DEGREE                            ;
+terminal Symbol DELETE                            ;
+terminal Symbol DENSE_RANK                        ;
+terminal Symbol DEPTH                             ;
+terminal Symbol DEREF                             ;
+terminal Symbol DERIVED                           ;
+terminal Symbol DESC                              ;
+terminal Symbol DESCRIBE                          ;
+terminal Symbol DESCRIPTOR                        ;
+terminal Symbol DETERMINISTIC                     ;
+terminal Symbol DIAGNOSTICS                       ;
+terminal Symbol DISCONNECT                        ;
+terminal Symbol DISPATCH                          ;
+terminal Symbol DISPLAY                           ;
+terminal Symbol DISTINCT                          ;
+terminal Symbol DOMAIN                            ;
+terminal Symbol DOUBLE                            ;
+terminal Symbol DOUBLE_PRECISION                  ;
+terminal Symbol DROP                              ;
+terminal Symbol DYNAMIC                           ;
+terminal Symbol DYNAMIC_FUNCTION                  ;
+terminal Symbol DYNAMIC_FUNCTION_CODE             ;
+terminal Symbol EACH                              ;
+terminal Symbol ELEMENT                           ;
+terminal Symbol ELSE                              ;
+terminal Symbol END                               ;
+terminal Symbol ENDEXEC                           ;
+terminal Symbol EQUALS                            ;
+terminal Symbol ESCAPE                            ;
+terminal Symbol EVERY                             ;
+terminal Symbol EXCEPT                            ;
+terminal Symbol EXCEPTION                         ;
+terminal Symbol EXCLUDE                           ;
+terminal Symbol EXCLUDING                         ;
+terminal Symbol EXEC                              ;
+terminal Symbol EXECUTE                           ;
+terminal Symbol EXISTS                            ;
+terminal Symbol EXP                               ;
+terminal Symbol EXTERN                            ;
+terminal Symbol EXTERNAL                          ;
+terminal Symbol EXTRACT                           ;
+terminal Symbol FALSE                             ;
+terminal Symbol FETCH                             ;
+terminal Symbol FILTER                            ;
+terminal Symbol FINAL                             ;
+terminal Symbol FIRST                             ;
+terminal Symbol FIXED                             ;
+terminal Symbol FLOAT                             ;
+terminal Symbol FLOOR                             ;
+terminal Symbol FOLLOWING                         ;
+terminal Symbol FOR                               ;
+terminal Symbol FOREIGN                           ;
+terminal Symbol FORTRAN                           ;
+terminal Symbol FOUND                             ;
+terminal Symbol FREE                              ;
+terminal Symbol FROM                              ;
+terminal Symbol FULL                              ;
+terminal Symbol FUNCTION                          ;
+terminal Symbol FUSION                            ;
+terminal Symbol GENERAL                           ;
+terminal Symbol GENERATED                         ;
+terminal Symbol GET                               ;
+terminal Symbol GLOBAL                            ;
+terminal Symbol GO                                ;
+terminal Symbol GOTO                              ;
+terminal Symbol GRANT                             ;
+terminal Symbol GRANTED                           ;
+terminal Symbol GROUP                             ;
+terminal Symbol GROUPING                          ;
+terminal Symbol GT                                ;
+terminal Symbol NE                                ;
+terminal Symbol GE                                ;
+terminal Symbol LE                                ;
+terminal Symbol HAVING                            ;
+terminal Symbol HIERARCHY                         ;
+terminal Symbol HOLD                              ;
+terminal Symbol HOUR                              ;
+terminal Symbol IDENTITY                          ;
+terminal Symbol IMMEDIATE                         ;
+terminal Symbol IMPLEMENTATION                    ;
+terminal Symbol IN                                ;
+terminal Symbol INCLUDING                         ;
+terminal Symbol INCREMENT                         ;
+terminal Symbol INDICATOR                         ;
+terminal Symbol INDICATOR_TYPE                    ;
+terminal Symbol INITIALLY                         ;
+terminal Symbol INNER                             ;
+terminal Symbol INOUT                             ;
+terminal Symbol INPUT                             ;
+terminal Symbol INSENSITIVE                       ;
+terminal Symbol INSERT                            ;
+terminal Symbol INSTANCE                          ;
+terminal Symbol INSTANTIABLE                      ;
+terminal Symbol INT                               ;
+terminal Symbol INTEGER                           ;
+terminal Symbol INTERSECT                         ;
+terminal Symbol INTERSECTION                      ;
+terminal Symbol INTERVAL                          ;
+terminal Symbol INTO                              ;
+terminal Symbol INVOKER                           ;
+terminal Symbol IS                                ;
+terminal Symbol ISOLATION                         ;
+terminal Symbol JOIN                              ;
+terminal Symbol KEY                               ;
+terminal Symbol KEY_MEMBER                        ;
+terminal Symbol KEY_TYPE                          ;
+terminal Symbol KIND                              ;
+terminal Symbol LANGUAGE                          ;
+terminal Symbol LARGE                             ;
+terminal Symbol LAST                              ;
+terminal Symbol LATERAL                           ;
+terminal Symbol LEADING                           ;
+terminal Symbol LEFT                              ;
+terminal Symbol LENGTH                            ;
+terminal Symbol LEVEL                             ;
+terminal Symbol LIKE                              ;
+terminal Symbol LN                                ;
+terminal Symbol LOCAL                             ;
+terminal Symbol LOCALTIME                         ;
+terminal Symbol LOCALTIMESTAMP                    ;
+terminal Symbol LOCATOR                           ;
+terminal Symbol LOGICAL                           ;
+terminal Symbol LOWER                             ;
+terminal Symbol MAP                               ;
+terminal Symbol MATCH                             ;
+terminal Symbol MATCHED                           ;
+terminal Symbol MAX                               ;
+terminal Symbol MAXVALUE                          ;
+terminal Symbol MEMBER                            ;
+terminal Symbol MERGE                             ;
+terminal Symbol MESSAGE_LENGTH                    ;
+terminal Symbol MESSAGE_OCTET_LENGTH              ;
+terminal Symbol MESSAGE_TEXT                      ;
+terminal Symbol METHOD                            ;
+terminal Symbol MIN                               ;
+terminal Symbol MINUTE                            ;
+terminal Symbol MINVALUE                          ;
+terminal Symbol MOD                               ;
+terminal Symbol MODIFIES                          ;
+terminal Symbol MODULE                            ;
+terminal Symbol MONTH                             ;
+terminal Symbol MORE                              ;
+terminal Symbol MULTISET                          ;
+terminal Symbol MUMPS                             ;
+terminal Symbol NAME                              ;
+terminal Symbol NAMES                             ;
+terminal Symbol NATIONAL                          ;
+terminal Symbol NATURAL                           ;
+terminal Symbol NCHAR                             ;
+terminal Symbol NCLOB                             ;
+terminal Symbol NESTING                           ;
+terminal Symbol NEW                               ;
+terminal Symbol NEXT                              ;
+terminal Symbol NO                                ;
+terminal Symbol NONE                              ;
+terminal Symbol NORMALIZE                         ;
+terminal Symbol NORMALIZED                        ;
+terminal Symbol NOT                               ;
+terminal Symbol NULL                              ;
+terminal Symbol NULLABLE                          ;
+terminal Symbol NULLIF                            ;
+terminal Symbol NULLS                             ;
+terminal Symbol NUMBER                            ;
+terminal Symbol NUMERIC                           ;
+terminal Symbol OBJECT                            ;
+terminal Symbol OCTETS                            ;
+terminal Symbol OCTET_LENGTH                      ;
+terminal Symbol OF                                ;
+terminal Symbol OLD                               ;
+terminal Symbol ON                                ;
+terminal Symbol ONLY                              ;
+terminal Symbol OPEN                              ;
+terminal Symbol OPTION                            ;
+terminal Symbol OPTIONS                           ;
+terminal Symbol OR                                ;
+terminal Symbol ORDER                             ;
+terminal Symbol ORDERING                          ;
+terminal Symbol ORDINALITY                        ;
+terminal Symbol OTHERS                            ;
+terminal Symbol OUT                               ;
+terminal Symbol OUTER                             ;
+terminal Symbol OUTPUT                            ;
+terminal Symbol OVER                              ;
+terminal Symbol OVERLAPS                          ;
+terminal Symbol OVERLAY                           ;
+terminal Symbol OVERRIDING                        ;
+terminal Symbol PACKED                            ;
+terminal Symbol PAD                               ;
+terminal Symbol PARAMETER                         ;
+terminal Symbol PARAMETER_MODE                    ;
+terminal Symbol PARAMETER_NAME                    ;
+terminal Symbol PARAMETER_ORDINAL_POSITION        ;
+terminal Symbol PARAMETER_SPECIFIC_CATALOG        ;
+terminal Symbol PARAMETER_SPECIFIC_NAME           ;
+terminal Symbol PARAMETER_SPECIFIC_SCHEMA         ;
+terminal Symbol PARTIAL                           ;
+terminal Symbol PARTITION                         ;
+terminal Symbol PASCAL                            ;
+terminal Symbol PATH                              ;
+terminal Symbol PERCENTILE_CONT                   ;
+terminal Symbol PERCENTILE_DISC                   ;
+terminal Symbol PERCENT_RANK                      ;
+terminal Symbol PIC                               ;
+terminal Symbol PICTURE                           ;
+terminal Symbol PLACING                           ;
+terminal Symbol PLI                               ;
+terminal Symbol POSITION                          ;
+terminal Symbol POSITIONING                       ;
+terminal Symbol POWER                             ;
+terminal Symbol PRECEDING                         ;
+terminal Symbol PRECISION                         ;
+terminal Symbol PREPARE                           ;
+terminal Symbol PRESERVE                          ;
+terminal Symbol PRIMARY                           ;
+terminal Symbol PRIOR                             ;
+terminal Symbol PRIVILEGES                        ;
+terminal Symbol PROCEDURE                         ;
+terminal Symbol PUBLIC                            ;
+terminal Symbol RANGE                             ;
+terminal Symbol RANK                              ;
+terminal Symbol READ                              ;
+terminal Symbol READS                             ;
+terminal Symbol REAL                              ;
+terminal Symbol RECURSIVE                         ;
+terminal Symbol REF                               ;
+terminal Symbol REFERENCES                        ;
+terminal Symbol REFERENCING                       ;
+terminal Symbol REGR_AVGX                         ;
+terminal Symbol REGR_AVGY                         ;
+terminal Symbol REGR_COUNT                        ;
+terminal Symbol REGR_INTERCEPT                    ;
+terminal Symbol REGR_R2                           ;
+terminal Symbol REGR_SLOPE                        ;
+terminal Symbol REGR_SXX                          ;
+terminal Symbol REGR_SXY                          ;
+terminal Symbol REGR_SYY                          ;
+terminal Symbol RELATIVE                          ;
+terminal Symbol RELEASE                           ;
+terminal Symbol REPEATABLE                        ;
+terminal Symbol RESTART                           ;
+terminal Symbol RESTRICT                          ;
+terminal Symbol RESULT                            ;
+terminal Symbol RETURN                            ;
+terminal Symbol RETURNED_CARDINALITY              ;
+terminal Symbol RETURNED_LENGTH                   ;
+terminal Symbol RETURNED_OCTET_LENGTH             ;
+terminal Symbol RETURNED_SQLSTATE                 ;
+terminal Symbol RETURNS                           ;
+terminal Symbol REVOKE                            ;
+terminal Symbol RIGHT                             ;
+terminal Symbol ROLE                              ;
+terminal Symbol ROLLBACK                          ;
+terminal Symbol ROLLUP                            ;
+terminal Symbol ROUTINE                           ;
+terminal Symbol ROUTINE_CATALOG                   ;
+terminal Symbol ROUTINE_NAME                      ;
+terminal Symbol ROUTINE_SCHEMA                    ;
+terminal Symbol ROW                               ;
+terminal Symbol ROWS                              ;
+terminal Symbol ROWSET                            ;
+terminal Symbol ROW_COUNT                         ;
+terminal Symbol ROW_NUMBER                        ;
+terminal Symbol SAVEPOINT                         ;
+terminal Symbol SCALE                             ;
+terminal Symbol SCHEMA                            ;
+terminal Symbol SCHEMA_NAME                       ;
+terminal Symbol SCOPE                             ;
+terminal Symbol SCOPE_CATALOG                     ;
+terminal Symbol SCOPE_NAME                        ;
+terminal Symbol SCOPE_SCHEMA                      ;
+terminal Symbol SCROLL                            ;
+terminal Symbol SEARCH                            ;
+terminal Symbol SECOND                            ;
+terminal Symbol SECTION                           ;
+terminal Symbol SECURITY                          ;
+terminal Symbol SELECT                            ;
+terminal Symbol SELF                              ;
+terminal Symbol SENSITIVE                         ;
+terminal Symbol SEPARATE                          ;
+terminal Symbol SEQUENCE                          ;
+terminal Symbol SERIALIZABLE                      ;
+terminal Symbol SERVER_NAME                       ;
+terminal Symbol SESSION                           ;
+terminal Symbol SESSION_USER                      ;
+terminal Symbol SET                               ;
+terminal Symbol SETS                              ;
+terminal Symbol SIGN                              ;
+terminal Symbol SIMILAR                           ;
+terminal Symbol SIMPLE                            ;
+terminal Symbol SIZE                              ;
+terminal Symbol SMALLINT                          ;
+terminal Symbol SOME                              ;
+terminal Symbol SOURCE                            ;
+terminal Symbol SPACE                             ;
+terminal Symbol SPECIFIC                          ;
+terminal Symbol SPECIFICTYPE                      ;
+terminal Symbol SPECIFIC_NAME                     ;
+terminal Symbol SQL                               ;
+terminal Symbol SQLEXCEPTION                      ;
+terminal Symbol SQLSTATE                          ;
+terminal Symbol SQLSTATE_TYPE                     ;
+terminal Symbol SQLWARNING                        ;
+terminal Symbol SQRT                              ;
+terminal Symbol START                             ;
+terminal Symbol STARTING                          ;
+terminal Symbol STATE                             ;
+terminal Symbol STATEMENT                         ;
+terminal Symbol STATIC                            ;
+terminal Symbol STDDEV_POP                        ;
+terminal Symbol STDDEV_SAMP                       ;
+terminal Symbol STRUCTURE                         ;
+terminal Symbol STYLE                             ;
+terminal Symbol SUBCLASS_ORIGIN                   ;
+terminal Symbol SUBMULTISET                       ;
+terminal Symbol SUBSTRING                         ;
+terminal Symbol SUM                               ;
+terminal Symbol SYMMETRIC                         ;
+terminal Symbol SYSTEM                            ;
+terminal Symbol SYSTEM_USER                       ;
+terminal Symbol TABLE                             ;
+terminal Symbol TABLESAMPLE                       ;
+terminal Symbol TEMPORARY                         ;
+terminal Symbol THEN                              ;
+terminal Symbol TIES                              ;
+terminal Symbol TIME                              ;
+terminal Symbol TIMESTAMP                         ;
+terminal Symbol TIMEZONE_HOUR                     ;
+terminal Symbol TIMEZONE_MINUTE                   ;
+terminal Symbol TO                                ;
+terminal Symbol TOP_LEVEL_COUNT                   ;
+terminal Symbol TRAILING                          ;
+terminal Symbol TRANSACTION                       ;
+terminal Symbol TRANSACTIONS_COMMITTED            ;
+terminal Symbol TRANSACTIONS_ROLLED_BACK          ;
+terminal Symbol TRANSACTION_ACTIVE                ;
+terminal Symbol TRANSFORM                         ;
+terminal Symbol TRANSFORMS                        ;
+terminal Symbol TRANSLATE                         ;
+terminal Symbol TRANSLATION                       ;
+terminal Symbol TREAT                             ;
+terminal Symbol TRIGGER                           ;
+terminal Symbol TRIGGER_CATALOG                   ;
+terminal Symbol TRIGGER_NAME                      ;
+terminal Symbol TRIGGER_SCHEMA                    ;
+terminal Symbol TRIM                              ;
+terminal Symbol TRUE                              ;
+terminal Symbol TYPE                              ;
+terminal Symbol UESCAPE                           ;
+terminal Symbol UNBOUNDED                         ;
+terminal Symbol UNCOMMITTED                       ;
+terminal Symbol UNDER                             ;
+terminal Symbol UNION                             ;
+terminal Symbol UNIQUE                            ;
+terminal Symbol UNKNOWN                           ;
+terminal Symbol UNNAMED                           ;
+terminal Symbol UNNEST                            ;
+terminal Symbol UPDATE                            ;
+terminal Symbol UPPER                             ;
+terminal Symbol USAGE                             ;
+terminal Symbol USER                              ;
+terminal Symbol USER_DEFINED_TYPE_CATALOG         ;
+terminal Symbol USER_DEFINED_TYPE_CODE            ;
+terminal Symbol USER_DEFINED_TYPE_NAME            ;
+terminal Symbol USER_DEFINED_TYPE_SCHEMA          ;
+terminal Symbol USING                             ;
+terminal Symbol VALUE                             ;
+terminal Symbol VALUES                            ;
+terminal Symbol VARCHAR                           ;
+terminal Symbol VARYING                           ;
+terminal Symbol VAR_POP                           ;
+terminal Symbol VAR_SAMP                          ;
+terminal Symbol VIEW                              ;
+terminal Symbol VOLATILE                          ;
+terminal Symbol WHEN                              ;
+terminal Symbol WHENEVER                          ;
+terminal Symbol WHERE                             ;
+terminal Symbol WIDTH_BUCKET                      ;
+terminal Symbol WINDOW                            ;
+terminal Symbol WITH                              ;
+terminal Symbol WITHIN                            ;
+terminal Symbol WITHOUT                           ;
+terminal Symbol WORK                              ;
+terminal Symbol WRITE                             ;
+terminal Symbol YEAR                              ;
+terminal Symbol ZONE                              ;
+
+terminal Symbol DQOUOTE       ;
+terminal Symbol PERCENT       ;
+terminal Symbol AMPERSAND     ;
+terminal Symbol QUOTE         ;
+terminal Symbol LPAR          ;
+terminal Symbol RPAR          ;
+terminal Symbol ASTERISK      ;
+terminal Symbol PLUS          ;
+terminal Symbol COMMA         ;
+terminal Symbol MINUS         ;
+terminal Symbol DOT           ;
+terminal Symbol SLASH         ;
+terminal Symbol COLON         ;
+terminal Symbol SEMICOLON     ;
+terminal Symbol LT            ;
+terminal Symbol EQUAL         ;
+terminal Symbol QUESTION      ;
+terminal Symbol LCOR          ;
+terminal Symbol RCOR          ;
+terminal Symbol CIRCUMFLEX    ;
+terminal Symbol UNDERSCORE    ;
+terminal Symbol VBAR          ;
+terminal Symbol LBRA          ;
+terminal Symbol RBRA          ;
+
+terminal Symbol ID ;
+terminal Symbol ID_FULL ;
+terminal Symbol NUMERO ;
+terminal Symbol LITERAL ;
+
+terminal Symbol DATEVAL ;
+terminal Symbol TIMEVAL ;
+terminal Symbol TMSVAL  ;
+
+/****************************************************************************/
+/****************************************************************************/
+/*                         NO TERMINALES                                    */
+/****************************************************************************/
+/****************************************************************************/
+
+non terminal ignorar , cosas , cosas_2;
+
+non terminal sql_embedded ;
+non terminal sql_statement ;
+non terminal sql_ddl ;
+non terminal sql_dml ;
+non terminal sql_cursor ;
+non terminal sql_delete ;
+non terminal sql_update ;
+non terminal sql_insert ;
+non terminal sql_select ;
+
+non terminal sql_cursor_declare ;
+non terminal sql_cursor_open ;
+non terminal sql_cursor_fetch ;
+non terminal sql_cursor_close ;
+
+non terminal sql_cursor_options_opt ;
+non terminal sql_cursor_options ;
+non terminal sql_cursor_option ;
+non terminal sql_cursor_options_2_opt ;
+non terminal sql_cursor_options_2 ;
+non terminal sql_cursor_option_2 ;
+
+non terminal sql_select_statement ;
+non terminal sql_fullselect ;
+
+non terminal with_lst_opt ;
+non terminal common_table_lst ;
+non terminal common_table_expr ;
+
+non terminal columns ;
+non terminal column_list_opt ;
+non terminal column_list ;
+non terminal column_name ;
+
+non terminal cursor_name ;
+
+non terminal sql_cursor_type ;
+non terminal sql_prepared_statement ;
+non terminal fetch_type_opt ;
+non terminal fetch_type_lst ;
+non terminal fetch_type ;
+non terminal fetch_orientation_opt ;
+non terminal fetch_orientation ;
+non terminal fetch_row_positioned ;
+non terminal from_opt ;
+non terminal rowset_opt ;
+non terminal rowset ;
+
+non terminal fetch_target_list ;
+non terminal fetch_single_row ;
+non terminal fetch_multiple_row ;
+non terminal fetch_single_target ;
+non terminal fetch_offset ;
+non terminal host_variable_list ;
+non terminal host_variable ;
+non terminal descriptor_name ;
+non terminal abs_rel ;
+
+
+non terminal select_list ;
+non terminal select_table_expresion ;
+non terminal select_conditions ;
+
+non terminal select_clause ;
+non terminal select_quantifier ;
+non terminal clause_where_opt ;
+non terminal clause_group_opt ;
+non terminal clause_having_opt ;
+
+
+non terminal SymbolList from_clause ;
+non terminal SymbolList table_list ;
+
+non terminal Symbol        table_id ;
+non terminal Symbol        table_name ;
+non terminal               table_alias_opt ;
+
+/**********************************************************************/
+/**********************************************************************/
+/**********************************************************************/
+/*                        INICIO PARSER                               */
+/**********************************************************************/
+/**********************************************************************/
+/**********************************************************************/
+
+/* El parser se inicia con el primer bloque EXEC SQL */
+
+/*
+sql_embedded ::= sql_statement
+             |   sql_embedded sql_statement
+             ;
+  */            
+sql_statement ::=  sql_ddl
+              |    sql_dml
+              ; 
+
+
+sql_ddl ::= NADA
+        ;
+        
+sql_dml ::= sql_cursor
+        |   sql_delete
+        |   sql_insert
+        |   sql_update
+        |   sql_select_statement {: debug("en sql_dml"); :}
+        ;        
+
+/**********************************************************************/
+/*    -TABLE-                                                         */
+/**********************************************************************/
+
+table_list ::= table_name:t                     {: RESULT = new SymbolList(t); :}
+                     |   table_list:l COMMA table_name:t  {: RESULT = l.add(t);          :} 
+                     ;
+                        
+table_name      ::= table_id:i table_alias_opt {: RESULT = i; :}
+                ;            
+
+table_id        ::= ID_FULL:i  {: RESULT = i; :}
+                |   ID:i       {: RESULT = i; :}
+                ; 
+           
+table_alias_opt ::= AS ID
+                |
+                ;
+
+/**********************************************************************/
+/*                      -SELECT-                                      */
+/**********************************************************************/
+
+sql_select_statement ::= /* with_lst_opt */ sql_fullselect 
+                     ;
+                     
+with_lst_opt ::= WITH common_table_lst
+             |   
+             ;
+             
+common_table_lst ::= common_table_expr
+             |       common_table_lst COMMA common_table_expr
+             ;
+             
+common_table_expr ::= table_id:t {: code.addTempTable(t); :} 
+                                 column_list_opt AS sql_fullselect
+                  ;
+                  
+
+/*
+sql_fullselect ::= select_clause select_quantifier select_list select_table_expresion select_conditions 
+               ;
+*/
+
+sql_fullselect ::= select_clause from_clause 
+               ;
+
+select_clause  ::= SELECT select_quantifier columns
+               ;
+                        
+select_quantifier ::= ALL
+                  |   DISTINCT
+                  |
+                  ;                 
+
+select_list ::= ASTERISK
+            |   ignorar
+            ; 
+           
+from_clause ::= FROM table_list:t {: RESULT = code.addTablesRead(t); :}
+            ;
+            
+select_conditions ::= clause_where_opt clause_group_opt clause_having_opt
+                  ;
+                  
+clause_where_opt ::= WHERE ignorar
+                 |
+                 ;
+                 
+clause_group_opt ::= GROUP BY ignorar
+                 |
+                 ;
+                 
+clause_having_opt ::= HAVING ignorar
+                  ;                                                                                                
+
+
+/**********************************************************************/
+/*         -COLUMN-                                                   */
+/**********************************************************************/
+
+columns ::= ASTERISK
+        |   column_list
+        ;
+                   
+column_list_opt ::= ignorar
+                |
+                ;
+                               
+column_list     ::= ignorar
+                ;
+          
+/**********************************************************************/
+/*    SENTENCIAS INMEDIATAS                                           */
+/**********************************************************************/
+
+sql_update ::= UPDATE table_name ignorar
+           ;
+           
+
+/**********************************************************************/
+/*                        CURSOR                                      */
+/**********************************************************************/
+        
+sql_cursor ::= sql_cursor_declare
+           |   sql_cursor_open            
+           |   sql_cursor_close
+           |   sql_cursor_fetch 
+           ;
+
+cursor_name ::= ID
+            ;
+            
+sql_cursor_declare  ::= DECLARE cursor_name sql_cursor_options_opt CURSOR sql_cursor_options_2_opt
+                                FOR  sql_cursor_type
+                    ; 
+
+sql_cursor_options_opt ::= sql_cursor_options
+                       |
+                       ;
+
+sql_cursor_options ::= sql_cursor_option
+                   |   sql_cursor_options sql_cursor_option
+                   ;
+                   
+sql_cursor_option ::= NO
+                  |   SCROLL
+                  |   ASENSITIVE
+                  |   INSENSITIVE
+                  |   SENSITIVE
+                  |   DYNAMIC
+                  |   STATIC
+                  ;                                                
+                  
+sql_cursor_options_2_opt ::= sql_cursor_options_2
+                         |
+                         ;
+
+sql_cursor_options_2 ::= sql_cursor_option_2
+                     |   sql_cursor_options_2 sql_cursor_option_2
+                     ;
+
+sql_cursor_option_2 ::= WITH
+                    |   WITHOUT
+                    |   HOLD
+                    |   RETURN
+                    |   TO
+                    |   CALLER
+                    |   CLIENT
+                    |   ROWSET
+                    |   POSITIONING
+                    ;                               
+                    
+sql_cursor_type ::= sql_select_statement
+                |   sql_prepared_statement
+                ;
+                
+sql_prepared_statement ::= ID
+                       ;
+                                                                                                
+sql_cursor_open  ::= OPEN ID
+                 ;
+           
+sql_cursor_close ::= CLOSE ID
+                 ;
+                 
+sql_cursor_fetch  ::= FETCH fetch_type_opt fetch_orientation_opt from_opt  cursor_name  
+                            fetch_target_list
+                  ;
+
+fetch_type_opt ::= fetch_type_lst
+               |
+               ;
+               
+fetch_type_lst ::= fetch_type
+               |   fetch_type_lst fetch_type
+               ;
+               
+fetch_type ::= INSENSITIVE
+           |   SENSITIVE
+           |   WITH CONTINUE
+           ;
+                              
+fetch_orientation_opt ::= fetch_orientation
+                      |
+                      ;
+                      
+fetch_orientation ::= BEFORE
+                  |   AFTER
+                  |   fetch_row_positioned
+                  ;                                         
+                                         
+fetch_row_positioned ::= NEXT     rowset_opt
+                     |   PRIOR    rowset_opt
+                     |   FIRST    rowset_opt
+                     |   LAST     rowset_opt
+                     |   CURRENT  rowset_opt
+                     |   ABSOLUTE 
+                     |   RELATIVE
+                     |   ROWSET STARTING AT abs_rel fetch_offset 
+                     ;
+                                  
+abs_rel ::= ABSOLUTE
+        |   RELATIVE
+        ;
+                                          
+rowset_opt ::= rowset
+           |
+           ;
+           
+rowset ::= ROWSET
+       |   CONTINUE
+       ;
+        
+fetch_offset ::= host_variable
+             |   NUMERO
+             ;
+                            
+fetch_target_list ::= fetch_single_row
+                  |   fetch_multiple_row
+                  ;
+                  
+fetch_single_row ::= INTO fetch_single_target
+                 ;
+                 
+fetch_single_target ::= host_variable_list
+                    |   DESCRIPTOR descriptor_name
+                    ;
+                    
+host_variable_list ::= host_variable
+                   |   host_variable_list COMMA host_variable
+                   ;
+                   
+descriptor_name ::= ID
+                ;
+                                                        
+                                                                                                                                
+/**********************************************************************/
+/*         CLAUSULAS OPCIONALES                                       */
+/**********************************************************************/
+            
+/**********************************************************************/
+/*         AUXILIARES TEMPORALES PARA TRABAJO                         */
+/**********************************************************************/
+            
+
+ignorar ::= cosas
+    |   ignorar cosas
+    ;
+
+cosas ::= cosas_2
+      |   LPAR cosas RPAR
+      ;
+              
+cosas_2 ::=  A_SET                               
+   | ABS                                 
+   | ABSOLUTE                            
+   | ACTION                              
+   | ADA                                 
+   | ADD                                 
+   | ADMIN                               
+   | AFTER                               
+   | ALLOCATE                            
+   | ALTER                               
+   | ALWAYS                              
+   | AND                                 
+   | ANY                                 
+   | ARE                                 
+   | ARRAY                               
+   | ASC                                 
+   | ASENSITIVE                          
+   | ASSERTION                           
+   | ASSIGNMENT                          
+   | ASYMMETRIC                          
+   | AT                                  
+   | ATOMIC                              
+   | ATTRIBUTE                           
+   | ATTRIBUTES                          
+   | AUTHORIZATION                       
+   | AUTO                                
+   | AVG                                 
+   | BEFORE                              
+   | BEGIN                               
+   | BERNOULLI                           
+   | BETWEEN                             
+   | BIGINT                              
+   | BIN                                 
+   | BINARY                              
+   | BLOB                                
+   | BOOLEAN                             
+   | BOTH                                
+   | BREADTH                             
+   | BY                                  
+   | C                                   
+   | CALL                                
+   | CALLED                              
+   | CALLER                              
+   | CARDINALITY                         
+   | CASCADE                             
+   | CASCADED                            
+   | CASE                                
+   | CAST                                
+   | CATALOG                             
+   | CATALOG_NAME                        
+   | CEIL                                
+   | CEILING                             
+   | CHAIN                               
+   | CHAR                                
+   | CHARACTER                           
+   | CHARACTERISTICS                     
+   | CHARACTERS                          
+   | CHARACTER_LENGTH                    
+   | CHARACTER_SET_CATALOG               
+   | CHARACTER_SET_NAME                  
+   | CHARACTER_SET_SCHEMA                
+   | CHAR_LENGTH                         
+   | CHECK                               
+   | CHECKED                             
+   | CLASS_ORIGIN                        
+   | CLIENT                              
+   | CLOB                                
+   | CLOSE                               
+   | COALESCE                            
+   | COBOL                               
+   | CODE_UNITS                          
+   | COLLATE                             
+   | COLLATION                           
+   | COLLATION_CATALOG                   
+   | COLLATION_NAME                      
+   | COLLATION_SCHEMA                    
+   | COLLECT                             
+   | COLUMN                              
+   | COLUMN_NAME                         
+   | COMMAND_FUNCTION                    
+   | COMMAND_FUNCTION_CODE               
+   | COMMIT                              
+   | COMMITTED                           
+   | CONDITION                           
+   | CONDITION_NUMBER                    
+   | CONNECT                             
+   | CONNECTION                          
+   | CONNECTION_NAME                     
+   | CONST                               
+   | CONSTRAINT                          
+   | CONSTRAINTS                         
+   | CONSTRAINT_CATALOG                  
+   | CONSTRAINT_NAME                     
+   | CONSTRAINT_SCHEMA                   
+   | CONSTRUCTOR                         
+   | CONSTRUCTORS                        
+   | CONTAINS                            
+   | CONTINUE                            
+   | CONVERT                             
+   | CORR                                
+   | CORRESPONDING                       
+   | COUNT                               
+   | COVAR_POP                           
+   | COVAR_SAMP                          
+   | CREATE                              
+   | CROSS                               
+   | CUBE                                
+   | CUME_DIST                           
+   | CURRENT                             
+   | CURRENT_COLLATION                   
+   | CURRENT_DATE                        
+   | CURRENT_DEFAULT_TRANSFORM_GROUP     
+   | CURRENT_PATH                        
+   | CURRENT_ROLE                        
+   | CURRENT_TIME                        
+   | CURRENT_TIMESTAMP                   
+   | CURRENT_TRANSFORM_GROUP_FOR_TYPE    
+   | CURRENT_USER                        
+   | CURSOR                              
+   | CURSOR_NAME                         
+   | CYCLE                               
+   | DATA                                
+   | DATE                                
+   | DATETIME_INTERVAL_CODE              
+   | DATETIME_INTERVAL_PRECISION         
+   | DAY                                 
+   | DCL                                 
+   | DEALLOCATE                          
+   | DEC                                 
+   | DECIMAL                             
+   | DECLARE                             
+   | DEFAULT                             
+   | DEFAULTS                            
+   | DEFERRABLE                          
+   | DEFERRED                            
+   | DEFINED                             
+   | DEFINER                             
+   | DEGREE                              
+   | DELETE                              
+   | DENSE_RANK                          
+   | DEPTH                               
+   | DEREF                               
+   | DERIVED                             
+   | DESC                                
+   | DESCRIBE                            
+   | DESCRIPTOR                          
+   | DETERMINISTIC                       
+   | DIAGNOSTICS                         
+   | DISCONNECT                          
+   | DISPATCH                            
+   | DISPLAY                             
+   | DOMAIN                              
+   | DOUBLE                              
+   | DOUBLE_PRECISION                    
+   | DROP                                
+   | DYNAMIC                             
+   | DYNAMIC_FUNCTION                    
+   | DYNAMIC_FUNCTION_CODE               
+   | EACH                                
+   | ELEMENT                             
+   | ELSE                                
+   | END                                 
+   | ENDEXEC                             
+   | EQUALS                              
+   | ESCAPE                              
+   | EVERY                               
+   | EXCEPT                              
+   | EXCEPTION                           
+   | EXCLUDE                             
+   | EXCLUDING                           
+   | EXEC                                
+   | EXECUTE                             
+   | EXISTS                              
+   | EXP                                 
+   | EXTERN                              
+   | EXTERNAL                            
+   | EXTRACT                             
+   | FALSE                               
+   | FETCH                               
+   | FILTER                              
+   | FINAL                               
+   | FIRST                               
+   | FIXED                               
+   | FLOAT                               
+   | FLOOR                               
+   | FOLLOWING                           
+   | FOR                                 
+   | FOREIGN                             
+   | FORTRAN                             
+   | FOUND                               
+   | FREE                                
+   | FULL                                
+   | FUNCTION                            
+   | FUSION                              
+   | GENERAL                             
+   | GENERATED                           
+   | GET                                 
+   | GLOBAL                              
+   | GO                                  
+   | GOTO                                
+   | GRANT                               
+   | GRANTED                             
+   | GROUPING                            
+   | GT                                  
+   | NE                                  
+   | GE                                  
+   | LE                                  
+   | HIERARCHY                           
+   | HOLD                                
+   | HOUR                                
+   | IDENTITY                            
+   | IMMEDIATE                           
+   | IMPLEMENTATION                      
+   | IN                                  
+   | INCLUDING                           
+   | INCREMENT                           
+   | INDICATOR                           
+   | INDICATOR_TYPE                      
+   | INITIALLY                           
+   | INNER                               
+   | INOUT                               
+   | INPUT                               
+   | INSENSITIVE                         
+   | INSERT                              
+   | INSTANCE                            
+   | INSTANTIABLE                        
+   | INT                                 
+   | INTEGER                             
+   | INTERSECT                           
+   | INTERSECTION                        
+   | INTERVAL                            
+   | INTO                                
+   | INVOKER                             
+   | IS                                  
+   | ISOLATION                           
+   | JOIN                                
+   | KEY                                 
+   | KEY_MEMBER                          
+   | KEY_TYPE                            
+   | KIND                                
+   | LANGUAGE                            
+   | LARGE                               
+   | LAST                                
+   | LATERAL                             
+   | LEADING                             
+   | LEFT                                
+   | LENGTH                              
+   | LEVEL                               
+   | LIKE                                
+   | LN                                  
+   | LOCAL                               
+   | LOCALTIME                           
+   | LOCALTIMESTAMP                      
+   | LOCATOR                             
+   | LOGICAL                             
+   | LOWER                               
+   | MAP                                 
+   | MATCH                               
+   | MATCHED                             
+   | MAX                                 
+   | MAXVALUE                            
+   | MEMBER                              
+   | MERGE                               
+   | MESSAGE_LENGTH                      
+   | MESSAGE_OCTET_LENGTH                
+   | MESSAGE_TEXT                        
+   | METHOD                              
+   | MIN                                 
+   | MINUTE                              
+   | MINVALUE                            
+   | MOD                                 
+   | MODIFIES                            
+   | MODULE                              
+   | MONTH                               
+   | MORE                                
+   | MULTISET                            
+   | MUMPS                               
+   | NAME                                
+   | NAMES                               
+   | NATIONAL                            
+   | NATURAL                             
+   | NCHAR                               
+   | NCLOB                               
+   | NESTING                             
+   | NEW                                 
+   | NEXT                                
+   | NO                                  
+   | NONE                                
+   | NORMALIZE                           
+   | NORMALIZED                          
+   | NOT                                 
+   | NULL                                
+   | NULLABLE                            
+   | NULLIF                              
+   | NULLS                               
+   | NUMBER                              
+   | NUMERIC                             
+   | OBJECT                              
+   | OCTETS                              
+   | OCTET_LENGTH                        
+   | OF                                  
+   | OLD                                 
+   | ON                                  
+   | ONLY                                
+   | OPEN                                
+   | OPTION                              
+   | OPTIONS                             
+   | OR                                  
+   | ORDER                               
+   | ORDERING                            
+   | ORDINALITY                          
+   | OTHERS                              
+   | OUT                                 
+   | OUTER                               
+   | OUTPUT                              
+   | OVER                                
+   | OVERLAPS                            
+   | OVERLAY                             
+   | OVERRIDING                          
+   | PACKED                              
+   | PAD                                 
+   | PARAMETER                           
+   | PARAMETER_MODE                      
+   | PARAMETER_NAME                      
+   | PARAMETER_ORDINAL_POSITION          
+   | PARAMETER_SPECIFIC_CATALOG          
+   | PARAMETER_SPECIFIC_NAME             
+   | PARAMETER_SPECIFIC_SCHEMA           
+   | PARTIAL                             
+   | PARTITION                           
+   | PASCAL                              
+   | PATH                                
+   | PERCENTILE_CONT                     
+   | PERCENTILE_DISC                     
+   | PERCENT_RANK                        
+   | PIC                                 
+   | PICTURE                             
+   | PLACING                             
+   | PLI                                 
+   | POSITION                            
+   | POSITIONING                         
+   | POWER                               
+   | PRECEDING                           
+   | PRECISION                           
+   | PREPARE                             
+   | PRESERVE                            
+   | PRIMARY                             
+   | PRIOR                               
+   | PRIVILEGES                          
+   | PROCEDURE                           
+   | PUBLIC                              
+   | RANGE                               
+   | RANK                                
+   | READ                                
+   | READS                               
+   | REAL                                
+   | RECURSIVE                           
+   | REF                                 
+   | REFERENCES                          
+   | REFERENCING                         
+   | REGR_AVGX                           
+   | REGR_AVGY                           
+   | REGR_COUNT                          
+   | REGR_INTERCEPT                      
+   | REGR_R2                             
+   | REGR_SLOPE                          
+   | REGR_SXX                            
+   | REGR_SXY                            
+   | REGR_SYY                            
+   | RELATIVE                            
+   | RELEASE                             
+   | REPEATABLE                          
+   | RESTART                             
+   | RESTRICT                            
+   | RESULT                              
+   | RETURN                              
+   | RETURNED_CARDINALITY                
+   | RETURNED_LENGTH                     
+   | RETURNED_OCTET_LENGTH               
+   | RETURNED_SQLSTATE                   
+   | RETURNS                             
+   | REVOKE                              
+   | RIGHT                               
+   | ROLE                                
+   | ROLLBACK                            
+   | ROLLUP                              
+   | ROUTINE                             
+   | ROUTINE_CATALOG                     
+   | ROUTINE_NAME                        
+   | ROUTINE_SCHEMA                      
+   | ROW                                 
+   | ROWS                                
+   | ROWSET                              
+   | ROW_COUNT                           
+   | ROW_NUMBER                          
+   | SAVEPOINT                           
+   | SCALE                               
+   | SCHEMA                              
+   | SCHEMA_NAME                         
+   | SCOPE                               
+   | SCOPE_CATALOG                       
+   | SCOPE_NAME                          
+   | SCOPE_SCHEMA                        
+   | SCROLL                              
+   | SEARCH                              
+   | SECOND                              
+   | SECTION                             
+   | SECURITY                            
+   | SELECT                              
+   | SELF                                
+   | SENSITIVE                           
+   | SEPARATE                            
+   | SEQUENCE                            
+   | SERIALIZABLE                        
+   | SERVER_NAME                         
+   | SESSION                             
+   | SESSION_USER                        
+   | SET                                 
+   | SETS                                
+   | SIGN                                
+   | SIMILAR                             
+   | SIMPLE                              
+   | SIZE                                
+   | SMALLINT                            
+   | SOME                                
+   | SOURCE                              
+   | SPACE                               
+   | SPECIFIC                            
+   | SPECIFICTYPE                        
+   | SPECIFIC_NAME                       
+   | SQL                                 
+   | SQLEXCEPTION                        
+   | SQLSTATE                            
+   | SQLSTATE_TYPE                       
+   | SQLWARNING                          
+   | SQRT                                
+   | START                               
+   | STARTING                            
+   | STATE                               
+   | STATEMENT                           
+   | STATIC                              
+   | STDDEV_POP                          
+   | STDDEV_SAMP                         
+   | STRUCTURE                           
+   | STYLE                               
+   | SUBCLASS_ORIGIN                     
+   | SUBMULTISET                         
+   | SUBSTRING                           
+   | SUM                                 
+   | SYMMETRIC                           
+   | SYSTEM                              
+   | SYSTEM_USER                         
+   | TABLE                               
+   | TABLESAMPLE                         
+   | TEMPORARY                           
+   | THEN                                
+   | TIES                                
+   | TIME                                
+   | TIMESTAMP                           
+   | TIMEZONE_HOUR                       
+   | TIMEZONE_MINUTE                     
+   | TO                                  
+   | TOP_LEVEL_COUNT                     
+   | TRAILING                            
+   | TRANSACTION                         
+   | TRANSACTIONS_COMMITTED              
+   | TRANSACTIONS_ROLLED_BACK            
+   | TRANSACTION_ACTIVE                  
+   | TRANSFORM                           
+   | TRANSFORMS                          
+   | TRANSLATE                           
+   | TRANSLATION                         
+   | TREAT                               
+   | TRIGGER                             
+   | TRIGGER_CATALOG                     
+   | TRIGGER_NAME                        
+   | TRIGGER_SCHEMA                      
+   | TRIM                                
+   | TRUE                                
+   | TYPE                                
+   | UESCAPE                             
+   | UNBOUNDED                           
+   | UNCOMMITTED                         
+   | UNDER                               
+   | UNION                               
+   | UNIQUE                              
+   | UNKNOWN                             
+   | UNNAMED                             
+   | UNNEST                              
+   | UPDATE                              
+   | UPPER                               
+   | USAGE                               
+   | USER                                
+   | USER_DEFINED_TYPE_CATALOG           
+   | USER_DEFINED_TYPE_CODE              
+   | USER_DEFINED_TYPE_NAME              
+   | USER_DEFINED_TYPE_SCHEMA            
+   | USING                               
+   | VALUE                               
+   | VALUES                              
+   | VARCHAR                             
+   | VARYING                             
+   | VAR_POP                             
+   | VAR_SAMP                            
+   | VIEW                                
+   | VOLATILE                            
+   | WHEN                                
+   | WHENEVER                                                          
+   | WIDTH_BUCKET                        
+   | WINDOW                              
+   | WITH                                
+   | WITHIN                              
+   | WITHOUT                             
+   | WORK                                
+   | WRITE                               
+   | YEAR                                
+   | ZONE                                
+   | DQOUOTE                             
+   | PERCENT                             
+   | AMPERSAND                           
+   | QUOTE                               
+   | PLUS                                
+   | COMMA                               
+   | MINUS                               
+   | DOT                                 
+   | SLASH                               
+   | COLON                               
+   | SEMICOLON                           
+   | LT                                  
+   | EQUAL                               
+   | QUESTION                            
+   | LCOR                                
+   | RCOR                                
+   | CIRCUMFLEX                          
+   | UNDERSCORE                          
+   | VBAR                                
+   | LBRA                                
+   | RBRA                                
+   | ID                                  
+   | ID_FULL                             
+   | NUMERO                              
+   | LITERAL                             
+   | DATEVAL                             
+   | TIMEVAL                             
+   | TMSVAL                              
+   ;                      

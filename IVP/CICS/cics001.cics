@@ -1,0 +1,4 @@
+             LINK PROGRAM('PEPE') 
+                  COMMAREA(COMMAREA)
+                  LENGTH(1024)
+                            

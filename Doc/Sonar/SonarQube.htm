@@ -1,0 +1,3718 @@
+<!DOCTYPE html>
+<!--[if IE 9 ]> <html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html><!--<![endif]--><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="shortcut icon" type="image/x-icon" href="http://nemo.sonarqube.org/images/favicon.ico?1441984214">
+  
+  <title>SonarQube</title>
+
+  <link href="SonarQube_files/sonar.css" rel="stylesheet" media="all">
+  
+  <script src="SonarQube_files/ga.js" async="" type="text/javascript"></script><script>
+    var pageLang = 'es';
+    
+    window.SS = {
+      hoursInDay: 8,
+      user: '',
+      userName: '',
+      userEmail: '',
+      lf: {
+        enableGravatar: true,
+        gravatarServerUrl: 'https://secure.gravatar.com/avatar/{EMAIL_MD5}.jpg?s={SIZE}&d=identicon'
+      },
+      updateCenterActive: true
+    };
+  </script>
+  <script src="SonarQube_files/sonar.js"></script>
+  <script>
+    var baseUrl = '';
+    var $j = jQuery.noConflict();
+    $j(document).ready(function () {$j('.open-modal').modal()});
+    moment.lang(window.pageLang);
+    numeral.language(window.pageLang);
+    requirejs.config({
+      baseUrl: baseUrl + '/js',
+      urlArgs: 'v=5.2',
+      paths: {
+        'react': 'libs/third-party/react-with-addons',
+        'underscore': 'libs/third-party/shim/underscore-shim',
+        'jquery': 'libs/third-party/shim/jquery-shim',
+        'backbone': 'libs/third-party/shim/backbone-shim',
+        'backbone.marionette': 'libs/third-party/shim/marionette-shim',
+        'moment': 'libs/third-party/shim/moment-shim'
+      }
+    });
+  </script>
+  <script src="SonarQube_files/app_002.js" data-requiremodule="apps/nav/app" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script><script src="SonarQube_files/app.js" data-requiremodule="apps/coding-rules/app" data-requirecontext="_" async="" charset="utf-8" type="text/javascript"></script></head>
+<body>
+
+
+  
+<div class="page-wrapper page-wrapper-global" id="container">
+  <nav class="navbar navbar-global page-container" id="global-navigation"><div class="container" data-reactid=".0"><div class="navbar-header" data-reactid=".0.0"><a class="navbar-brand" href="http://nemo.sonarqube.org/" data-reactid=".0.0.0"><img src="SonarQube_files/logo.svg" alt="Embrace Quality" title="Embrace Quality" data-reactid=".0.0.0.0" height="30" width="100"></a></div><ul class="nav navbar-nav" data-reactid=".0.1"><li class="dropdown" data-reactid=".0.1.0"><a class="dropdown-toggle" data-toggle="dropdown" href="#" data-reactid=".0.1.0.0"><span data-reactid=".0.1.0.0.0">Cuadros de mando</span><span data-reactid=".0.1.0.0.1">&nbsp;</span><span class="icon-dropdown" data-reactid=".0.1.0.0.2"></span></a><ul class="dropdown-menu" data-reactid=".0.1.0.1"><li data-reactid=".0.1.0.1.0:$Helicopter View"><a href="http://nemo.sonarqube.org/dashboard/index?did=67" data-reactid=".0.1.0.1.0:$Helicopter View.0">Helicopter View</a></li><li data-reactid=".0.1.0.1.0:$Languages Panel"><a href="http://nemo.sonarqube.org/dashboard/index?did=143" data-reactid=".0.1.0.1.0:$Languages Panel.0">Languages Panel</a></li><li data-reactid=".0.1.0.1.0:$Activity"><a href="http://nemo.sonarqube.org/dashboard/index?did=79" data-reactid=".0.1.0.1.0:$Activity.0">Activity</a></li><li data-reactid=".0.1.0.1.0:$SonarQube Ecosystem"><a href="http://nemo.sonarqube.org/dashboard/index?did=146" data-reactid=".0.1.0.1.0:$SonarQube Ecosystem.0">SonarQube Ecosystem</a></li></ul></li><li data-reactid=".0.1.1"><a href="http://nemo.sonarqube.org/issues/search" data-reactid=".0.1.1.0">Evidencias</a></li><li data-reactid=".0.1.2"><a href="http://nemo.sonarqube.org/measures/search?qualifiers[]=TRK" data-reactid=".0.1.2.0">Medidas</a></li><li class="active" data-reactid=".0.1.3"><a href="http://nemo.sonarqube.org/coding_rules" data-reactid=".0.1.3.0">Reglas</a></li><li data-reactid=".0.1.4"><a href="http://nemo.sonarqube.org/profiles" data-reactid=".0.1.4.0">Perfiles</a></li><li data-reactid=".0.1.5"><a href="http://nemo.sonarqube.org/quality_gates" data-reactid=".0.1.5.0">Umbrales</a></li><li class="dropdown" data-reactid=".0.1.7"><a class="dropdown-toggle" data-toggle="dropdown" href="#" data-reactid=".0.1.7.0"><span data-reactid=".0.1.7.0.0">Más</span><span data-reactid=".0.1.7.0.1">&nbsp;</span><span class="icon-dropdown" data-reactid=".0.1.7.0.2"></span></a><ul class="dropdown-menu" data-reactid=".0.1.7.1"><li data-reactid=".0.1.7.1.0"><a href="http://nemo.sonarqube.org/comparison" data-reactid=".0.1.7.1.0.0">Compare Projects</a></li></ul></li></ul><ul class="nav navbar-nav navbar-right" data-reactid=".0.2"><li data-reactid=".0.2.0"><a href="#" data-reactid=".0.2.0.0">Conectarse</a></li><li class="dropdown" data-reactid=".0.2.1"><a class="navbar-search-dropdown" href="#" data-reactid=".0.2.1.0"><i class="icon-search navbar-icon" data-reactid=".0.2.1.0.0"></i><span data-reactid=".0.2.1.0.1">&nbsp;</span><i class="icon-dropdown" data-reactid=".0.2.1.0.2"></i></a><div class="dropdown-menu dropdown-menu-right" data-reactid=".0.2.1.1"></div></li><li data-reactid=".0.2.2"><a href="#" data-reactid=".0.2.2.0"><i class="icon-help navbar-icon" data-reactid=".0.2.2.0.0"></i></a></li></ul></div></nav>
+
+  
+
+  
+  <div id="body" class="page-container">
+    <div id="content"><div class="coding-rules search-navigator sticky">
+  <div style="top: 30px;" class="search-navigator-side">
+    <div class="search-navigator-filters"><div><h1 class="page-title">
+  Reglas
+</h1>
+
+</div></div>
+    <div class="search-navigator-facets"><div class="search-navigator-facets-list"><div data-property="q" class="search-navigator-facet-box"><div class="search-navigator-facet-query">
+  <form>
+    <input class="search-navigator-facet-input" name="q" placeholder="Buscar" type="text">
+  </form>
+</div>
+</div><div class="search-navigator-facet-box hidden"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Rule
+</a>
+
+<div class="search-navigator-facet-container">
+  
+</div>
+</div><div data-property="languages" class="search-navigator-facet-box"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox icon-checkbox-checked"></i>
+  Language
+</a>
+
+<div class="search-navigator-facet-list">
+    <a class="facet search-navigator-facet js-facet" data-value="cpp" title="C++">
+      <span class="facet-name">C++</span>
+      <span class="facet-stat">527</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="c" title="C">
+      <span class="facet-name">C</span>
+      <span class="facet-stat">516</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="java" title="Java">
+      <span class="facet-name">Java</span>
+      <span class="facet-stat">502</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="grvy" title="Groovy">
+      <span class="facet-name">Groovy</span>
+      <span class="facet-stat">351</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="cs" title="C#">
+      <span class="facet-name">C#</span>
+      <span class="facet-stat">350</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="vbnet" title="Visual Basic .NET">
+      <span class="facet-name">Visual Basic .NET</span>
+      <span class="facet-stat">306</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="py" title="Python">
+      <span class="facet-name">Python</span>
+      <span class="facet-stat">236</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="objc" title="Objective-C">
+      <span class="facet-name">Objective-C</span>
+      <span class="facet-stat">198</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="plsql" title="PL/SQL">
+      <span class="facet-name">PL/SQL</span>
+      <span class="facet-stat">147</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet active" data-value="cobol" title="COBOL">
+      <span class="facet-name">COBOL</span>
+      <span class="facet-stat">145</span>
+    </a>
+
+  <div class="search-navigator-facet-custom-value">
+    <div style="width: 100%" id="s2id_autogen6" class="select2-container js-custom-value">    <a href="#" onclick="return false;" class="select2-choice select2-default">   <span>Buscar</span><abbr class="select2-search-choice-close" style="display:none;"></abbr>   <div><b></b></div></a>    <div class="select2-drop select2-offscreen">   <div class="select2-search">       <input autocomplete="off" class="select2-input" type="text">   </div>   <ul class="select2-results">   </ul></div></div><input style="display: none;" class="js-custom-value" type="hidden">
+  </div>
+</div>
+</div><div data-property="tags" class="search-navigator-facet-box"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox icon-checkbox-checked"></i>
+  Tag
+</a>
+
+<div class="search-navigator-facet-list">
+    <a class="facet search-navigator-facet js-facet" data-value="sql" title="sql">
+      <span class="facet-name">sql</span>
+      <span class="facet-stat">33</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="brain-overload" title="brain-overload">
+      <span class="facet-name">brain-overload</span>
+      <span class="facet-stat">23</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="bug" title="bug">
+      <span class="facet-name">bug</span>
+      <span class="facet-stat">21</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="convention" title="convention">
+      <span class="facet-name">convention</span>
+      <span class="facet-stat">21</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="pitfall" title="pitfall">
+      <span class="facet-name">pitfall</span>
+      <span class="facet-stat">17</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="performance" title="performance">
+      <span class="facet-name">performance</span>
+      <span class="facet-stat">14</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="unused" title="unused">
+      <span class="facet-name">unused</span>
+      <span class="facet-stat">8</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="bad-practice" title="bad-practice">
+      <span class="facet-name">bad-practice</span>
+      <span class="facet-stat">7</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="lock-in" title="lock-in">
+      <span class="facet-name">lock-in</span>
+      <span class="facet-stat">7</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="cwe" title="cwe">
+      <span class="facet-name">cwe</span>
+      <span class="facet-stat">6</span>
+    </a>
+
+  <div class="search-navigator-facet-custom-value">
+    <div style="width: 100%" id="s2id_autogen7" class="select2-container js-custom-value">    <a href="#" onclick="return false;" class="select2-choice select2-default">   <span>Buscar</span><abbr class="select2-search-choice-close" style="display:none;"></abbr>   <div><b></b></div></a>    <div class="select2-drop select2-offscreen">   <div class="select2-search">       <input autocomplete="off" class="select2-input" type="text">   </div>   <ul class="select2-results">   </ul></div></div><input style="display: none;" class="js-custom-value" type="hidden">
+  </div>
+</div>
+</div><div data-property="repositories" class="search-navigator-facet-box search-navigator-facet-box-collapsed"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Repository
+</a>
+
+<div class="search-navigator-facet-list">
+
+  <div class="search-navigator-facet-custom-value">
+    <div style="width: 100%" id="s2id_autogen3" class="select2-container js-custom-value">    <a href="#" onclick="return false;" class="select2-choice select2-default">   <span>Buscar</span><abbr class="select2-search-choice-close" style="display:none;"></abbr>   <div><b></b></div></a>    <div class="select2-drop select2-offscreen">   <div class="select2-search">       <input autocomplete="off" class="select2-input" type="text">   </div>   <ul class="select2-results">   </ul></div></div><input style="display: none;" class="js-custom-value" type="hidden">
+  </div>
+</div>
+</div><div data-property="debt_characteristics" class="search-navigator-facet-box search-navigator-facet-box-collapsed"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Characteristic
+</a>
+
+<div class="search-navigator-facet-list">
+</div>
+</div><div data-property="severities" class="search-navigator-facet-box search-navigator-facet-box-collapsed"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Default Severity
+</a>
+
+<div class="search-navigator-facet-list">
+</div>
+</div><div data-property="statuses" class="search-navigator-facet-box search-navigator-facet-box-collapsed"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Status
+</a>
+
+<div class="search-navigator-facet-list">
+</div>
+</div><div data-property="available_since" class="search-navigator-facet-box search-navigator-facet-box-collapsed"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Available Since
+</a>
+
+<div class="search-navigator-facet-container">
+  <input id="dp1449052227617" class="search-navigator-facet-input hasDatepicker" name="availableSince" placeholder="Fecha" type="text">
+</div>
+</div><div data-property="is_template" class="search-navigator-facet-box search-navigator-facet-box-collapsed"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Template
+</a>
+
+<div class="search-navigator-facet-list">
+  <a class="facet search-navigator-facet js-facet" data-value="true">
+    <span class="facet-name">Mostrar solo plantillas</span>
+    <span class="facet-stat"></span>
+  </a>
+  <a class="facet search-navigator-facet js-facet" data-value="false">
+    <span class="facet-name">Ocultar Plantillas</span>
+    <span class="facet-stat"></span>
+  </a>
+</div>
+</div><div data-property="qprofile" class="search-navigator-facet-box search-navigator-facet-box-collapsed"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Quality Profile
+</a>
+
+<div class="search-navigator-facet-list">
+    <a class="facet search-navigator-facet js-facet" data-value="cobol-sonar-way-41769" title="Sonar way">
+      <span class="facet-name">Sonar way <span class="note">COBOL</span></span>
+      <span class="facet-stat">
+        <span class="js-active facet-toggle facet-toggle-green ">active</span>
+        <span class="js-inactive facet-toggle facet-toggle-red facet-toggle-active">inactive</span>
+      </span>
+    </a>
+</div>
+</div><div title="El criterio de herencia está disponible cuando un perfil de calidad heredado se selecciona" data-property="inheritance" class="search-navigator-facet-box search-navigator-facet-box-collapsed search-navigator-facet-box-forbidden"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Inheritance
+</a>
+
+<div class="search-navigator-facet-list">
+    <a class="facet search-navigator-facet js-facet" data-value="NONE" title="Not Inherited">
+      <span class="facet-name">Not Inherited</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="INHERITED" title="Heredado">
+      <span class="facet-name">Heredado</span>
+    </a>
+    <a class="facet search-navigator-facet js-facet" data-value="OVERRIDES" title="Overridden">
+      <span class="facet-name">Overridden</span>
+    </a>
+</div>
+</div><div title="El criterio de severidad activa está disponible cuando un perfil de calidad está seleccionado" data-property="active_severities" class="search-navigator-facet-box search-navigator-facet-box-collapsed search-navigator-facet-box-forbidden"><a class="search-navigator-facet-header js-facet-toggle">
+  <i class="icon-checkbox "></i>
+  Activation Severity
+</a>
+
+<div class="search-navigator-facet-list">
+</div>
+</div></div></div>
+  </div>
+
+  <div class="search-navigator-workspace">
+    <div style="top: 30px;" class="search-navigator-workspace-header"><div><div class="search-navigator-header-component">
+    &nbsp;
+</div>
+
+
+<div class="search-navigator-header-actions">
+    <div class="search-navigator-header-pagination flash flash-heavy">
+        <a class="js-prev icon-prev" title="Anterior"></a>
+        <span class="current">1 / <span id="coding-rules-total">145</span></span>
+        <a class="js-next icon-next" title="Siguiente"></a>
+    </div>
+
+
+  <div class="search-navigator-header-buttons button-group">
+    <button class="js-reload">Reload</button>
+    <button class="js-new-search" id="coding-rules-new-search">Nueva búsqueda</button>
+  </div>
+</div>
+</div></div>
+    <div class="search-navigator-workspace-list"><div><div class="js-list"><div class="coding-rule selected"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"CURSOR"s should not be opened inside loops</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">leak, performance, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"CURSORs" should not be closed inside loops</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">performance, pitfall, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"CURSORs" should not be declared inside loops</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">performance, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"CURSORs" should not be declared inside procedure divisions</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"DELETE" and "UPDATE" statements should contain "WHERE" clauses</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"DELETE" statements should have a WHERE clause</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+          <span class="text-danger">DEPRECATED</span>
+          &nbsp;&nbsp;&nbsp;
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"DISTINCT" should not be used in SQL "SELECT" statements</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bad-practice, performance, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"EVALUATE WHEN" statements should not contain conditional logic</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"EXIT PROGRAM" should be the last statement of a sequence</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"FOR READ ONLY" or "FOR UPDATE" should be specified for DB2 cursors</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">performance, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"GO TO" statements should not be used</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"GROUP BY" should not be used in SQL "SELECT" statements</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload, performance, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"LOCK TABLE" should not be used</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bad-practice, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"OCCURS 1" should not be used on a data item</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">clumsy, performance</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"ORDER BY" should be specified for cursors</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"PERFORM ... THRU ..." should not be used</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">pitfall</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"PERFORM" calls should not be recursive</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">unpredictable</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"PERFORM" calls should not be too deeply nested</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"READ" statement should have either an "AT END" or an "INVALID KEY" clause if "FILE-STATUS" is not defined on the file</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"TO" keywords should be aligned in a sequence of "MOVE" statement</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"UNION" should not be used in "SELECT" statements</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"WHERE" clauses should not contain too many lines</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">"WITH DEBUGGING MODE" should not be used</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">cwe, security</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">(Microfocus) The size of a file data item should not exceed 63488 characters</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">A SQL "BETWEEN" clause should be used instead of "X&gt;=Y AND X&lt;=Z"</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Alphanumeric values should not be moved to numeric fields</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug, cwe</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Any closable statement having some nested statement should be closed</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">confusing</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Arithmetic expressions and scalar functions should not be used in "WHERE" conditions</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">performance, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid "CORRESPONDING" option inside "ADD", "SUBSTRACT" or "MOVE" statements</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">pitfall</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid "DISPLAY...UPON CONSOLE" statement</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bad-practice</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid misindented, paragraphs or statements</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid paragraphs that contain no statements</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">unused</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid programs with too high cyclomatic complexity</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid programs with too many lines of code</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid too complex conditions</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid use of "NOSONAR" marker</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bad-practice</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid use of OS/VS "EXHIBIT" statement</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">lock-in</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid use of OS/VS "NOTE" statement</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">lock-in</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid use of OS/VS "ON" statement</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">lock-in</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid use of OS/VS "TRANSFORM" statement</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">lock-in</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid using "ALTER" statement</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid using "COMPUTATIONAL" data value clause</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">lock-in</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid using "EXAMINE" statement (OS/VS)</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">lock-in</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid using "INITIALIZE" statement</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid using "MERGE" statement</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">performance</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid using "NEXT SENTENCE" statement</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">pitfall</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid using "OPEN" statement inside a loop</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">performance</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid using "PERFORM PARAGRAPH"</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">pitfall</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid using "PERFORM SECTION"</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">pitfall</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid using "REDEFINES" clause</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">pitfall</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid using "SECTION" in "PROCEDURE DIVISION"</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid using "SORT" statement</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">performance</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid using paragraphs</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">pitfall</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Avoid using the data value clause in linkage section</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Branches should have sufficient coverage by unit tests</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bad-practice</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Check "FILE STATUS" when it is available after IO operations</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">error-handling</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Close an "IF" statement with an "END-IF"</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">confusing</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Collapsible "IF" statements should be merged</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">clumsy</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Column names should be used in a SQL "ORDER BY" clause</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Columns to be read with a "SELECT" statement should be clearly defined</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Comment header structure</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Complex conditions should not contain redundant sub-conditions</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Conditions in related "IF/ELSE IF" statements and "WHEN" clauses in "EVALUATE" statements should not have the same condition</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug, cert, pitfall, unused</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Conditions should not unconditionally evaluate to "TRUE" or to "FALSE"</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Control flow statements should not be nested too deeply</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Copybooks should be used only to share data structures but not procedural logic</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">pitfall</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Copybooks should not contain keywords relating to the nature or structure of a program</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bad-practice</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Data item declarations should be aligned</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Data items are initialized with correct data type</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Data items should never be accessed using more than one "OF" clause</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Data used in a "LINKAGE" should be defined in a COPYBOOK</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">pitfall</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Declared files should be used</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">unused</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Ending words such as "END-IF", "END-READ", ... should be aligned with their corresponding "IF", "READ", ...</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Explicitly opened cursors should be closed</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">cwe, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Failed unit tests should be fixed</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">File naming convention</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">File-Code naming convention</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Files should not contain too many paragraphs</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Files should not contain too many sections</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">First level data item naming convention</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">GOBACK should be used instead of STOP RUN</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Level 77 should not be used</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Lines should have sufficient coverage by unit tests</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bad-practice</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Logical file naming convention</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Magic Number</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Modules should not have too many lines</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Nested SQL "SELECT" statements should not be used</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload, performance, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">New types ("TYPEDEF") should be defined in copybooks</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Number of "PERFORM" statements done in a procedure (section or paragraph) should be limited</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Number of COPY directives in a program should be limited</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Number of subprograms called in a program should be limited</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Open files should always be explicitly closed</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug, cwe</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Paragraphs should be documented</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Paragraphs should not be redefined</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">pitfall</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Paragraphs should not be too complex</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Paragraphs should not have too many lines</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Parameters of a "CALL" statement must be first initialized</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Prevent GO TO statement from transferring control outside current module</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Procedures should share a naming convention in a "PERFORM" procedure THRU 'prefix'procedure</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Program ID must match File Name</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Program naming convention</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Record Cobol analyzer failures</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Respect paragraph naming convention</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Second procedures of "PERFORM ... THRU ..." statements should be defined in the source code after the first procedures</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Section names should be unique within a program</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">pitfall</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Sections of code should not be "commented out"</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">misra, unused</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Sections should be documented</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Sections should end with an empty paragraph</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Sections should not be empty</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">unused</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Sections should not be too complex</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Sections should not have too many lines</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">brain-overload</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Sections/paragraphs should perform at most one SQL operation</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Skipped unit tests should be either removed or fixed</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">pitfall</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Some characters in COBOL identifiers should not be used</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">lock-in</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Source files should have a sufficient density of comment lines</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Source files should not have any duplicated blocks</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">pitfall</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Specify a "WHERE" clause in "UPDATE" statements</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+          <span class="text-danger">DEPRECATED</span>
+          &nbsp;&nbsp;&nbsp;
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Specify length of "COMMAREA" in CICS Link and Xctl commands</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">SQL "INSERT" statements should explicitly list the columns to be set</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">SQL "LIKE" clauses should not start with wildcard characters</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">performance, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">SQL "OR" clauses testing equality on the same identifier should be replaced by an "IN" clause</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">SQL "SELECT" statements should always have "WHERE" conditions</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">SQL "WHERE" clauses should use ANSI standard operators</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">obsolete, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">SQL data definition language (DDL) statements should not be used</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">SQL EXISTS subqueries should not be used</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">SQL should not be used</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">SQL statements should not contain dynamic clauses</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">SQL statements should not join too many tables</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">performance, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">SQL tables should be joined with the "JOIN" keyword</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">obsolete, sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Statements should be on separate lines</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">STOP RUN or "GOBACK" should be the last statement of a sequence</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">String literals should not be duplicated</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">design</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Tabulation characters should not be used</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">convention</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Test return code of CICS commands with "RESP" or "NOHANDLE" conditions</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">error-handling</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">The "LIKE" operator should be used very carefully in SQL "WHERE" condition</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">sql</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">The last paragraph of a "PERFORM" THRU should only contain an "EXIT" statement</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">pitfall</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Two branches in the same conditional structure should not have exactly the same implementation</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Unused data items blocks should be removed</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">unused</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Unused paragraphs should be removed (potential dead code)</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">unused</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Unused sections should be removed (potential dead code)</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">unused</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Use "RESP" condition when calling a CICS command</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">error-handling</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Use "WHEN OTHER" clause in "EVALUATE" statement</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">cert, cwe, misra</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">Values should only be moved to variables large enough to hold them without truncation</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">bug, cwe</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">When calling a subprogram, 
+the data item containing the name of the subprogram to be called should 
+not be programmatically updated</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+        <span class="note">COBOL</span>
+          &nbsp;&nbsp;&nbsp;
+          <i class="icon-tags"></i>
+          <span class="note">pitfall</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div><div class="coding-rule"><table class="coding-rule-table">
+  <tbody><tr>
+
+    <td>
+      <div class="coding-rule-title">
+        <a class="js-rule link-no-underline">XPath rule</a>
+      </div>
+    </td>
+
+    <td class="coding-rule-table-meta-cell">
+      <div class="coding-rule-meta">
+          <span class="text-danger">DEPRECATED</span>
+          &nbsp;&nbsp;&nbsp;
+        <span class="note">COBOL</span>
+        <a class="js-rule-filter link-no-underline spacer-left" href="#">
+          <i class="icon-filter icon-half-transparent"></i>&nbsp;<i class="icon-dropdown"></i>
+        </a>
+      </div>
+    </td>
+
+  </tr>
+</tbody></table>
+</div></div>
+
+<div class="search-navigator-workspace-list-more">
+  <span style="display: none;" class="js-more"><i class="spinner"></i></span>
+</div>
+</div></div>
+    <div class="search-navigator-workspace-details"></div>
+  </div>
+</div>
+</div>
+  </div>
+</div>
+
+
+  
+  <ul class="processes-container"></ul><div id="footer" class="page-footer page-container search-navigator-footer">
+    
+      
+        <div><script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-1880045-8']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script></div>
+      
+    
+    
+    <div>SonarQube™ technology is powered by <a href="http://www.sonarsource.com/" target="SonarSource SA">SonarSource SA</a></div>
+    <div>
+      Version 5.2 -
+      <a href="http://www.gnu.org/licenses/lgpl-3.0.txt" target="lgpl_v3">LGPL v3</a> -
+      <a href="http://www.sonarqube.org/" target="sonar">Community</a> -
+      <a href="http://www.sonarqube.org/documentation" target="sonar_doc">Documentation</a> -
+      <a href="http://www.sonarqube.org/support" target="support">Get Support</a> -
+      <a href="http://redirect.sonarsource.com/doc/plugin-library.html" target="plugins">Plugins</a> -
+      <a href="http://nemo.sonarqube.org/api_documentation">Web Service API</a>
+    </div>
+    <!--[if lte IE 8 ]><p class="spacer-top alert alert-danger">IE 8 is not supported. Some widgets may not be properly displayed. Please switch to a <a target="_blank" href="http://redirect.sonarsource.com/doc/requirements.html">supported version or another supported browser</a>.</p><!--<![endif]-->
+  </div>
+
+
+  <script>
+  var sonarRecentHistory = new Sonar.RecentHistory();
+  
+</script>
+
+
+
+<script>
+  (function () {
+    var options = {};
+    
+
+    
+
+    window.SS.isUserAdmin = false;
+    require(['apps/nav/app'], function (App) {
+      App.start(options);
+    });
+  })();
+</script>
+
+
+<!--[if lte IE 7 ]>
+<div style="position:fixed;z-index:99999;top:0;bottom:0;left:0;right:0;background:#fff;">
+  <div style="margin-top:150px;text-align:center;line-height:1.4;color:#333;">
+    The web interface cannot be displayed because your browser is not supported.<br>
+    Please switch to a <a target="_blank"
+                          href="http://redirect.sonarsource.com/doc/requirements.html">supported version or another supported browser</a>.
+  </div>
+</div>
+<!--<![endif]-->
+
+
+
+
+  <script>
+    require(['apps/coding-rules/app'], function (App) {
+      App.start({ el: '#content' });
+    });
+  </script>
+
+
+
+
+<div class="workspace-nav"><ul class="workspace-nav-list"></ul>
+</div><div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div></body></html>

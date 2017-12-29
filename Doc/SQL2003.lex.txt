@@ -1,0 +1,687 @@
+package com.jgg.sdp.parser.lang;
+
+import java_cup.runtime.ComplexSymbolFactory.*;
+import java_cup.runtime.Symbol;
+
+import com.jgg.sdp.core.ctes.*;
+import com.jgg.sdp.core.exceptions.*;
+import com.jgg.sdp.module.base.*;
+import com.jgg.sdp.module.factorias.*;
+import com.jgg.sdp.module.items.Source;
+import com.jgg.sdp.parser.base.*;
+
+import static com.jgg.sdp.parser.lang.SQL2003SYM.*;
+
+%%
+
+%public
+%class      SQL2003
+%extends    GenericLexer
+%implements GenericScanner, CobolLexer
+
+%line
+%column
+%char
+%full
+%ignorecase
+%cup
+
+%state  ID_DIVISION , ENV_DIVISION , DATA_DIVISION , PROC_DIVISION
+%state  CONF_SECT , IO_SECT
+
+%state  EXEC , SQL , CICS
+
+%xstate COMMENT , COMMENT2 , QUOTE_STRING
+%xstate COPYS   
+%xstate SDP
+
+%{
+
+   String cpyName = null;
+   
+   public void resetLiteral(String txt) {
+      data = true;
+      litLine = yyline;
+      litColumn = yycolumn;
+      cadena = new StringBuilder(txt);
+   }
+
+   public Symbol literal(String txt) {
+      cadena.append(txt);
+      String texto = cadena.toString();
+      cadena.setLength(0);
+      print("Devuelve LITERAL - " + texto);
+      Symbol s = new Symbol(LITERAL, litLine, litColumn, texto);
+      return symbolFactory.newSymbol(texto, LITERAL, s);
+   }
+
+   public Symbol literalEx(String txt) {
+      cadena.append(txt);
+      String texto = cadena.toString();
+      cadena.setLength(0);
+      print("Devuelve LITERAL EX - " + texto);
+      Symbol s = new Symbol(LITCONCAT, litLine, litColumn, texto);
+      return symbolFactory.newSymbol(texto, LITCONCAT, s);
+   }
+            
+   public Symbol symbol(int code){
+      return symbol(code, yytext());
+   }
+   
+   public Symbol symbol(int code, String txt) {
+      data = true;
+      print("Devuelve SYMBOL (" + (yyline + 1) + "," + (yycolumn + 1) + ") " + txt);
+      Symbol s = new Symbol(code, yyline, yycolumn, txt);
+      return symbolFactory.newSymbol(txt, code, s);
+   }
+
+   public Symbol symbolic(int value) {
+      data = true;
+      String txt = Integer.toString(value);
+      print("Devuelve SYMBOL (" + (yyline + 1) + "," + (yycolumn + 1) + ") " + txt);
+      Symbol s = new Symbol(NUMERO, yyline, yycolumn, txt);
+      return symbolFactory.newSymbol(txt, NUMERO, s);
+   }
+
+%}
+
+%init{
+   initLexer();
+%init}
+
+%eofval{
+
+    if (yymoreStreams()) {
+        module.removeSource();
+        yypopStream();
+    }
+    else {    
+        return symbolFactory.newSymbol("EOF", EOF);
+    }
+        
+%eofval}
+
+SPACES=[\ \t]+
+
+UNSIGNED=[0-9]
+UINT=[0-9]+
+ALPHA=[a-zA-Z]+
+NUMERO=[+|-]?[0-9]+
+DECIMAL=[+|-]?[0-9]+[\.\,]?[0-9]+
+FLOAT=[+|-]?[0-9]+[\.\,]?[0-9]+E[+|-]?[0-9]+
+
+ID = [a-zA-Z0-9\_]+
+SP=[ ]{1}
+bloque = {SP}{id} 
+
+TIMEVAL = [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}
+DATEVAL = [0-9]{4}\-[0-9]{2}\-[0-9]{2}
+DATETIMEVAL = {DATEVAL}[ ]{1}{TIMEVAL}
+TMSVAL = {DATETIMEVAL}\.[0-9]{6}
+
+%% 
+
+/******************************************************************************/
+/******************************************************************************/
+/***                      PALABRAS REERVADAS                                ***/
+/******************************************************************************/
+/******************************************************************************/
+
+A{SP}+SET                         { return Symbol(A_SET); }
+ABS                               { return Symbol(ABS                             ); } 
+ABSOLUTE                          { return Symbol(ABSOLUTE                        ); }
+ACTION                            { return Symbol(ACTION                          ); }
+ADA                               { return Symbol(ADA                             ); }
+ADD                               { return Symbol(ADD                             ); }
+ADMIN                             { return Symbol(ADMIN                           ); }
+AFTER                             { return Symbol(AFTER                           ); }
+ALL                               { return Symbol(ALL                             ); }
+ALLOCATE                          { return Symbol(ALLOCATE                        ); }
+ALTER                             { return Symbol(ALTER                           ); }
+ALWAYS                            { return Symbol(ALWAYS                          ); }
+amp                               { return Symbol(amp                             ); }
+AND                               { return Symbol(AND                             ); }
+ANY                               { return Symbol(ANY                             ); }
+ARE                               { return Symbol(ARE                             ); }
+ARRAY                             { return Symbol(ARRAY                           ); }
+AS                                { return Symbol(AS                              ); }
+ASC                               { return Symbol(ASC                             ); }
+ASENSITIVE                        { return Symbol(ASENSITIVE                      ); }
+ASSERTION                         { return Symbol(ASSERTION                       ); }
+ASSIGNMENT                        { return Symbol(ASSIGNMENT                      ); }
+ASYMMETRIC                        { return Symbol(ASYMMETRIC                      ); }
+AT                                { return Symbol(AT                              ); }
+ATOMIC                            { return Symbol(ATOMIC                          ); }
+ATTRIBUTE                         { return Symbol(ATTRIBUTE                       ); }
+ATTRIBUTES                        { return Symbol(ATTRIBUTES                      ); }
+AUTHORIZATION                     { return Symbol(AUTHORIZATION                   ); }
+auto                              { return Symbol(AUTO                            ); }
+AVG                               { return Symbol(AVG                             ); }
+BEFORE                            { return Symbol(BEFORE                          ); }
+BEGIN                             { return Symbol(BEGIN                           ); }
+BERNOULLI                         { return Symbol(BERNOULLI                       ); }
+BETWEEN                           { return Symbol(BETWEEN                         ); }
+BIGINT                            { return Symbol(BIGINT                          ); }
+BIN                               { return Symbol(BIN                             ); }
+BINARY                            { return Symbol(BINARY                          ); }
+BLOB                              { return Symbol(BLOB                            ); }
+BOOLEAN                           { return Symbol(BOOLEAN                         ); }
+BOTH                              { return Symbol(BOTH                            ); }
+BREADTH                           { return Symbol(BREADTH                         ); }
+BY                                { return Symbol(BY                              ); }
+C                                 { return Symbol(C                               ); }
+CALL                              { return Symbol(CALL                            ); }
+CALLED                            { return Symbol(CALLED                          ); }
+CARDINALITY                       { return Symbol(CARDINALITY                     ); }
+CASCADE                           { return Symbol(CASCADE                         ); }
+CASCADED                          { return Symbol(CASCADED                        ); }
+CASE                              { return Symbol(CASE                            ); }
+CAST                              { return Symbol(CAST                            ); }
+CATALOG                           { return Symbol(CATALOG                         ); }
+CATALOG_NAME                      { return Symbol(CATALOG_NAME                    ); }
+CEIL                              { return Symbol(CEIL                            ); }
+CEILING                           { return Symbol(CEILING                         ); }
+CHAIN                             { return Symbol(CHAIN                           ); }
+CHAR                              { return Symbol(CHAR                            ); }
+CHARACTER                         { return Symbol(CHARACTER                       ); }
+CHARACTERISTICS                   { return Symbol(CHARACTERISTICS                 ); }
+CHARACTERS                        { return Symbol(CHARACTERS                      ); }
+CHARACTER_LENGTH                  { return Symbol(CHARACTER_LENGTH                ); }
+CHARACTER_SET_CATALOG             { return Symbol(CHARACTER_SET_CATALOG           ); }
+CHARACTER_SET_NAME                { return Symbol(CHARACTER_SET_NAME              ); }
+CHARACTER_SET_SCHEMA              { return Symbol(CHARACTER_SET_SCHEMA            ); }
+CHAR_LENGTH                       { return Symbol(CHAR_LENGTH                     ); }
+CHECK                             { return Symbol(CHECK                           ); }
+CHECKED                           { return Symbol(CHECKED                         ); }
+CLASS_ORIGIN                      { return Symbol(CLASS_ORIGIN                    ); }
+CLOB                              { return Symbol(CLOB                            ); }
+CLOSE                             { return Symbol(CLOSE                           ); }
+COALESCE                          { return Symbol(COALESCE                        ); }
+COBOL                             { return Symbol(COBOL                           ); }
+CODE_UNITS                        { return Symbol(CODE_UNITS                      ); }
+COLLATE                           { return Symbol(COLLATE                         ); }
+COLLATION                         { return Symbol(COLLATION                       ); }
+COLLATION_CATALOG                 { return Symbol(COLLATION_CATALOG               ); }
+COLLATION_NAME                    { return Symbol(COLLATION_NAME                  ); }
+COLLATION_SCHEMA                  { return Symbol(COLLATION_SCHEMA                ); }
+COLLECT                           { return Symbol(COLLECT                         ); }
+COLUMN                            { return Symbol(COLUMN                          ); }
+COLUMN_NAME                       { return Symbol(COLUMN_NAME                     ); }
+COMMAND_FUNCTION                  { return Symbol(COMMAND_FUNCTION                ); }
+COMMAND_FUNCTION_CODE             { return Symbol(COMMAND_FUNCTION_CODE           ); }
+COMMIT                            { return Symbol(COMMIT                          ); }
+COMMITTED                         { return Symbol(COMMITTED                       ); }
+CONDITION                         { return Symbol(CONDITION                       ); }
+CONDITION_NUMBER                  { return Symbol(CONDITION_NUMBER                ); }
+CONNECT                           { return Symbol(CONNECT                         ); }
+CONNECTION                        { return Symbol(CONNECTION                      ); }
+CONNECTION_NAME                   { return Symbol(CONNECTION_NAME                 ); }
+const                             { return Symbol(CONST                           ); }
+CONSTRAINT                        { return Symbol(CONSTRAINT                      ); }
+CONSTRAINTS                       { return Symbol(CONSTRAINTS                     ); }
+CONSTRAINT_CATALOG                { return Symbol(CONSTRAINT_CATALOG              ); }
+CONSTRAINT_NAME                   { return Symbol(CONSTRAINT_NAME                 ); }
+CONSTRAINT_SCHEMA                 { return Symbol(CONSTRAINT_SCHEMA               ); }
+CONSTRUCTOR                       { return Symbol(CONSTRUCTOR                     ); }
+CONSTRUCTORS                      { return Symbol(CONSTRUCTORS                    ); }
+CONTAINS                          { return Symbol(CONTAINS                        ); }
+CONTINUE                          { return Symbol(CONTINUE                        ); }
+CONVERT                           { return Symbol(CONVERT                         ); }
+CORR                              { return Symbol(CORR                            ); }
+CORRESPONDING                     { return Symbol(CORRESPONDING                   ); }
+COUNT                             { return Symbol(COUNT                           ); }
+COVAR_POP                         { return Symbol(COVAR_POP                       ); }
+COVAR_SAMP                        { return Symbol(COVAR_SAMP                      ); }
+CREATE                            { return Symbol(CREATE                          ); }
+CROSS                             { return Symbol(CROSS                           ); }
+CUBE                              { return Symbol(CUBE                            ); }
+CUME_DIST                         { return Symbol(CUME_DIST                       ); }
+CURRENT                           { return Symbol(CURRENT                         ); }
+CURRENT_COLLATION                 { return Symbol(CURRENT_COLLATION               ); }
+CURRENT_DATE                      { return Symbol(CURRENT_DATE                    ); }
+CURRENT_DEFAULT_TRANSFORM_GROUP   { return Symbol(CURRENT_DEFAULT_TRANSFORM_GROUP ); }
+CURRENT_PATH                      { return Symbol(CURRENT_PATH                    ); }
+CURRENT_ROLE                      { return Symbol(CURRENT_ROLE                    ); }
+CURRENT_TIME                      { return Symbol(CURRENT_TIME                    ); }
+CURRENT_TIMESTAMP                 { return Symbol(CURRENT_TIMESTAMP               ); }
+CURRENT_TRANSFORM_GROUP_FOR_TYPE  { return Symbol(CURRENT_TRANSFORM_GROUP_FOR_TYPE); }
+CURRENT_USER                      { return Symbol(CURRENT_USER                    ); }
+CURSOR                            { return Symbol(CURSOR                          ); }
+CURSOR_NAME                       { return Symbol(CURSOR_NAME                     ); }
+CYCLE                             { return Symbol(CYCLE                           ); }
+DATA                              { return Symbol(DATA                            ); }
+DATE                              { return Symbol(DATE                            ); }
+DATETIME_INTERVAL_CODE            { return Symbol(DATETIME_INTERVAL_CODE          ); }
+DATETIME_INTERVAL_PRECISION       { return Symbol(DATETIME_INTERVAL_PRECISION     ); }
+DAY                               { return Symbol(DAY                             ); }
+DCL                               { return Symbol(DCL                             ); }
+DEALLOCATE                        { return Symbol(DEALLOCATE                      ); }
+DEC                               { return Symbol(DEC                             ); }
+DECIMAL                           { return Symbol(DECIMAL                         ); }
+DECLARE                           { return Symbol(DECLARE                         ); }
+DEFAULT                           { return Symbol(DEFAULT                         ); }
+DEFAULTS                          { return Symbol(DEFAULTS                        ); }
+DEFERRABLE                        { return Symbol(DEFERRABLE                      ); }
+DEFERRED                          { return Symbol(DEFERRED                        ); }
+DEFINED                           { return Symbol(DEFINED                         ); }
+DEFINER                           { return Symbol(DEFINER                         ); }
+DEGREE                            { return Symbol(DEGREE                          ); }
+DELETE                            { return Symbol(DELETE                          ); }
+DENSE_RANK                        { return Symbol(DENSE_RANK                      ); }
+DEPTH                             { return Symbol(DEPTH                           ); }
+DEREF                             { return Symbol(DEREF                           ); }
+DERIVED                           { return Symbol(DERIVED                         ); }
+DESC                              { return Symbol(DESC                            ); }
+DESCRIBE                          { return Symbol(DESCRIBE                        ); }
+DESCRIPTOR                        { return Symbol(DESCRIPTOR                      ); }
+DETERMINISTIC                     { return Symbol(DETERMINISTIC                   ); }
+DIAGNOSTICS                       { return Symbol(DIAGNOSTICS                     ); }
+DISCONNECT                        { return Symbol(DISCONNECT                      ); }
+DISPATCH                          { return Symbol(DISPATCH                        ); }
+DISPLAY                           { return Symbol(DISPLAY                         ); }
+DISTINCT                          { return Symbol(DISTINCT                        ); }
+DOMAIN                            { return Symbol(DOMAIN                          ); }
+DOUBLE                            { return Symbol(DOUBLE                          ); }
+DOUBLE_PRECISION                  { return Symbol(DOUBLE_PRECISION                ); }
+DROP                              { return Symbol(DROP                            ); }
+DYNAMIC                           { return Symbol(DYNAMIC                         ); }
+DYNAMIC_FUNCTION                  { return Symbol(DYNAMIC_FUNCTION                ); }
+DYNAMIC_FUNCTION_CODE             { return Symbol(DYNAMIC_FUNCTION_CODE           ); }
+EACH                              { return Symbol(EACH                            ); }
+ELEMENT                           { return Symbol(ELEMENT                         ); }
+ELSE                              { return Symbol(ELSE                            ); }
+END                               { return Symbol(END                             ); }
+END-EXEC                          { return Symbol(END-EXEC                        ); }
+EQUALS                            { return Symbol(EQUALS                          ); }
+ESCAPE                            { return Symbol(ESCAPE                          ); }
+EVERY                             { return Symbol(EVERY                           ); }
+EXCEPT                            { return Symbol(EXCEPT                          ); }
+EXCEPTION                         { return Symbol(EXCEPTION                       ); }
+EXCLUDE                           { return Symbol(EXCLUDE                         ); }
+EXCLUDING                         { return Symbol(EXCLUDING                       ); }
+EXEC                              { return Symbol(EXEC                            ); }
+EXECUTE                           { return Symbol(EXECUTE                         ); }
+EXISTS                            { return Symbol(EXISTS                          ); }
+EXP                               { return Symbol(EXP                             ); }
+extern                            { return Symbol(EXTERN                          ); }
+EXTERNAL                          { return Symbol(EXTERNAL                        ); }
+EXTRACT                           { return Symbol(EXTRACT                         ); }
+FALSE                             { return Symbol(FALSE                           ); }
+FETCH                             { return Symbol(FETCH                           ); }
+FILTER                            { return Symbol(FILTER                          ); }
+FINAL                             { return Symbol(FINAL                           ); }
+FIRST                             { return Symbol(FIRST                           ); }
+FIXED                             { return Symbol(FIXED                           ); }
+float                             { return Symbol(float                           ); }
+FLOAT                             { return Symbol(FLOAT                           ); }
+FLOOR                             { return Symbol(FLOOR                           ); }
+FOLLOWING                         { return Symbol(FOLLOWING                       ); }
+FOR                               { return Symbol(FOR                             ); }
+FOREIGN                           { return Symbol(FOREIGN                         ); }
+FORTRAN                           { return Symbol(FORTRAN                         ); }
+FOUND                             { return Symbol(FOUND                           ); }
+FREE                              { return Symbol(FREE                            ); }
+FROM                              { return Symbol(FROM                            ); }
+FULL                              { return Symbol(FULL                            ); }
+FUNCTION                          { return Symbol(FUNCTION                        ); }
+FUSION                            { return Symbol(FUSION                          ); }
+GENERAL                           { return Symbol(GENERAL                         ); }
+GENERATED                         { return Symbol(GENERATED                       ); }
+GET                               { return Symbol(GET                             ); }
+GLOBAL                            { return Symbol(GLOBAL                          ); }
+GO                                { return Symbol(GO                              ); }
+GOTO                              { return Symbol(GOTO                            ); }
+GRANT                             { return Symbol(GRANT                           ); }
+GRANTED                           { return Symbol(GRANTED                         ); }
+GROUP                             { return Symbol(GROUP                           ); }
+GROUPING                          { return Symbol(GROUPING                        ); }
+HAVING                            { return Symbol(HAVING                          ); }
+HIERARCHY                         { return Symbol(HIERARCHY                       ); }
+HOLD                              { return Symbol(HOLD                            ); }
+HOUR                              { return Symbol(HOUR                            ); }
+IDENTITY                          { return Symbol(IDENTITY                        ); }
+IMMEDIATE                         { return Symbol(IMMEDIATE                       ); }
+IMPLEMENTATION                    { return Symbol(IMPLEMENTATION                  ); }
+IN                                { return Symbol(IN                              ); }
+INCLUDING                         { return Symbol(INCLUDING                       ); }
+INCREMENT                         { return Symbol(INCREMENT                       ); }
+INDICATOR                         { return Symbol(INDICATOR                       ); }
+INDICATOR_TYPE                    { return Symbol(INDICATOR_TYPE                  ); }
+INITIALLY                         { return Symbol(INITIALLY                       ); }
+INNER                             { return Symbol(INNER                           ); }
+INOUT                             { return Symbol(INOUT                           ); }
+INPUT                             { return Symbol(INPUT                           ); }
+INSENSITIVE                       { return Symbol(INSENSITIVE                     ); }
+INSERT                            { return Symbol(INSERT                          ); }
+INSTANCE                          { return Symbol(INSTANCE                        ); }
+INSTANTIABLE                      { return Symbol(INSTANTIABLE                    ); }
+INT                               { return Symbol(INT                             ); }
+INTEGER                           { return Symbol(INTEGER                         ); }
+Interfaces                        { return Symbol(Interfaces                      ); }
+INTERSECT                         { return Symbol(INTERSECT                       ); }
+INTERSECTION                      { return Symbol(INTERSECTION                    ); }
+INTERVAL                          { return Symbol(INTERVAL                        ); }
+INTO                              { return Symbol(INTO                            ); }
+INVOKER                           { return Symbol(INVOKER                         ); }
+IS                                { return Symbol(IS                              ); }
+ISOLATION                         { return Symbol(ISOLATION                       ); }
+JOIN                              { return Symbol(JOIN                            ); }
+KEY                               { return Symbol(KEY                             ); }
+KEY_MEMBER                        { return Symbol(KEY_MEMBER                      ); }
+KEY_TYPE                          { return Symbol(KEY_TYPE                        ); }
+KIND                              { return Symbol(KIND                            ); }
+LANGUAGE                          { return Symbol(LANGUAGE                        ); }
+LARGE                             { return Symbol(LARGE                           ); }
+LAST                              { return Symbol(LAST                            ); }
+LATERAL                           { return Symbol(LATERAL                         ); }
+LEADING                           { return Symbol(LEADING                         ); }
+LEFT                              { return Symbol(LEFT                            ); }
+LENGTH                            { return Symbol(LENGTH                          ); }
+LEVEL                             { return Symbol(LEVEL                           ); }
+LIKE                              { return Symbol(LIKE                            ); }
+LN                                { return Symbol(LN                              ); }
+LOCAL                             { return Symbol(LOCAL                           ); }
+LOCALTIME                         { return Symbol(LOCALTIME                       ); }
+LOCALTIMESTAMP                    { return Symbol(LOCALTIMESTAMP                  ); }
+LOCATOR                           { return Symbol(LOCATOR                         ); }
+LOGICAL                           { return Symbol(LOGICAL                         ); }
+long                              { return Symbol(long                            ); }
+LOWER                             { return Symbol(LOWER                           ); }
+lt                                { return Symbol(lt                              ); }
+MAP                               { return Symbol(MAP                             ); }
+MATCH                             { return Symbol(MATCH                           ); }
+MATCHED                           { return Symbol(MATCHED                         ); }
+MAX                               { return Symbol(MAX                             ); }
+MAXVALUE                          { return Symbol(MAXVALUE                        ); }
+MEMBER                            { return Symbol(MEMBER                          ); }
+MERGE                             { return Symbol(MERGE                           ); }
+MESSAGE_LENGTH                    { return Symbol(MESSAGE_LENGTH                  ); }
+MESSAGE_OCTET_LENGTH              { return Symbol(MESSAGE_OCTET_LENGTH            ); }
+MESSAGE_TEXT                      { return Symbol(MESSAGE_TEXT                    ); }
+METHOD                            { return Symbol(METHOD                          ); }
+MIN                               { return Symbol(MIN                             ); }
+MINUTE                            { return Symbol(MINUTE                          ); }
+MINVALUE                          { return Symbol(MINVALUE                        ); }
+MOD                               { return Symbol(MOD                             ); }
+MODIFIES                          { return Symbol(MODIFIES                        ); }
+MODULE                            { return Symbol(MODULE                          ); }
+MONTH                             { return Symbol(MONTH                           ); }
+MORE                              { return Symbol(MORE                            ); }
+MULTISET                          { return Symbol(MULTISET                        ); }
+MUMPS                             { return Symbol(MUMPS                           ); }
+NAME                              { return Symbol(NAME                            ); }
+NAMES                             { return Symbol(NAMES                           ); }
+NATIONAL                          { return Symbol(NATIONAL                        ); }
+NATURAL                           { return Symbol(NATURAL                         ); }
+NCHAR                             { return Symbol(NCHAR                           ); }
+NCLOB                             { return Symbol(NCLOB                           ); }
+NESTING                           { return Symbol(NESTING                         ); }
+NEW                               { return Symbol(NEW                             ); }
+NEXT                              { return Symbol(NEXT                            ); }
+NO                                { return Symbol(NO                              ); }
+NONE                              { return Symbol(NONE                            ); }
+NORMALIZE                         { return Symbol(NORMALIZE                       ); }
+NORMALIZED                        { return Symbol(NORMALIZED                      ); }
+NOT                               { return Symbol(NOT                             ); }
+NULL                              { return Symbol(NULL                            ); }
+NULLABLE                          { return Symbol(NULLABLE                        ); }
+NULLIF                            { return Symbol(NULLIF                          ); }
+NULLS                             { return Symbol(NULLS                           ); }
+NUMBER                            { return Symbol(NUMBER                          ); }
+NUMERIC                           { return Symbol(NUMERIC                         ); }
+OBJECT                            { return Symbol(OBJECT                          ); }
+OCTETS                            { return Symbol(OCTETS                          ); }
+OCTET_LENGTH                      { return Symbol(OCTET_LENGTH                    ); }
+OF                                { return Symbol(OF                              ); }
+OLD                               { return Symbol(OLD                             ); }
+ON                                { return Symbol(ON                              ); }
+ONLY                              { return Symbol(ONLY                            ); }
+OPEN                              { return Symbol(OPEN                            ); }
+OPTION                            { return Symbol(OPTION                          ); }
+OPTIONS                           { return Symbol(OPTIONS                         ); }
+OR                                { return Symbol(OR                              ); }
+ORDER                             { return Symbol(ORDER                           ); }
+ORDERING                          { return Symbol(ORDERING                        ); }
+ORDINALITY                        { return Symbol(ORDINALITY                      ); }
+OTHERS                            { return Symbol(OTHERS                          ); }
+OUT                               { return Symbol(OUT                             ); }
+OUTER                             { return Symbol(OUTER                           ); }
+OUTPUT                            { return Symbol(OUTPUT                          ); }
+OVER                              { return Symbol(OVER                            ); }
+OVERLAPS                          { return Symbol(OVERLAPS                        ); }
+OVERLAY                           { return Symbol(OVERLAY                         ); }
+OVERRIDING                        { return Symbol(OVERRIDING                      ); }
+PACKED                            { return Symbol(PACKED                          ); }
+PAD                               { return Symbol(PAD                             ); }
+PARAMETER                         { return Symbol(PARAMETER                       ); }
+PARAMETER_MODE                    { return Symbol(PARAMETER_MODE                  ); }
+PARAMETER_NAME                    { return Symbol(PARAMETER_NAME                  ); }
+PARAMETER_ORDINAL_POSITION        { return Symbol(PARAMETER_ORDINAL_POSITION      ); }
+PARAMETER_SPECIFIC_CATALOG        { return Symbol(PARAMETER_SPECIFIC_CATALOG      ); }
+PARAMETER_SPECIFIC_NAME           { return Symbol(PARAMETER_SPECIFIC_NAME         ); }
+PARAMETER_SPECIFIC_SCHEMA         { return Symbol(PARAMETER_SPECIFIC_SCHEMA       ); }
+PARTIAL                           { return Symbol(PARTIAL                         ); }
+PARTITION                         { return Symbol(PARTITION                       ); }
+PASCAL                            { return Symbol(PASCAL                          ); }
+PATH                              { return Symbol(PATH                            ); }
+PERCENTILE_CONT                   { return Symbol(PERCENTILE_CONT                 ); }
+PERCENTILE_DISC                   { return Symbol(PERCENTILE_DISC                 ); }
+PERCENT_RANK                      { return Symbol(PERCENT_RANK                    ); }
+PIC                               { return Symbol(PIC                             ); }
+PICTURE                           { return Symbol(PICTURE                         ); }
+PLACING                           { return Symbol(PLACING                         ); }
+PLI                               { return Symbol(PLI                             ); }
+POSITION                          { return Symbol(POSITION                        ); }
+POWER                             { return Symbol(POWER                           ); }
+PRECEDING                         { return Symbol(PRECEDING                       ); }
+PRECISION                         { return Symbol(PRECISION                       ); }
+PREPARE                           { return Symbol(PREPARE                         ); }
+PRESERVE                          { return Symbol(PRESERVE                        ); }
+PRIMARY                           { return Symbol(PRIMARY                         ); }
+PRIOR                             { return Symbol(PRIOR                           ); }
+PRIVILEGES                        { return Symbol(PRIVILEGES                      ); }
+PROCEDURE                         { return Symbol(PROCEDURE                       ); }
+PUBLIC                            { return Symbol(PUBLIC                          ); }
+RANGE                             { return Symbol(RANGE                           ); }
+RANK                              { return Symbol(RANK                            ); }
+READ                              { return Symbol(READ                            ); }
+READS                             { return Symbol(READS                           ); }
+REAL                              { return Symbol(REAL                            ); }
+RECURSIVE                         { return Symbol(RECURSIVE                       ); }
+REF                               { return Symbol(REF                             ); }
+REFERENCES                        { return Symbol(REFERENCES                      ); }
+REFERENCING                       { return Symbol(REFERENCING                     ); }
+REGR_AVGX                         { return Symbol(REGR_AVGX                       ); }
+REGR_AVGY                         { return Symbol(REGR_AVGY                       ); }
+REGR_COUNT                        { return Symbol(REGR_COUNT                      ); }
+REGR_INTERCEPT                    { return Symbol(REGR_INTERCEPT                  ); }
+REGR_R2                           { return Symbol(REGR_R2                         ); }
+REGR_SLOPE                        { return Symbol(REGR_SLOPE                      ); }
+REGR_SXX                          { return Symbol(REGR_SXX                        ); }
+REGR_SXY                          { return Symbol(REGR_SXY                        ); }
+REGR_SYY                          { return Symbol(REGR_SYY                        ); }
+RELATIVE                          { return Symbol(RELATIVE                        ); }
+RELEASE                           { return Symbol(RELEASE                         ); }
+REPEATABLE                        { return Symbol(REPEATABLE                      ); }
+RESTART                           { return Symbol(RESTART                         ); }
+RESTRICT                          { return Symbol(RESTRICT                        ); }
+RESULT                            { return Symbol(RESULT                          ); }
+RETURN                            { return Symbol(RETURN                          ); }
+RETURNED_CARDINALITY              { return Symbol(RETURNED_CARDINALITY            ); }
+RETURNED_LENGTH                   { return Symbol(RETURNED_LENGTH                 ); }
+RETURNED_OCTET_LENGTH             { return Symbol(RETURNED_OCTET_LENGTH           ); }
+RETURNED_SQLSTATE                 { return Symbol(RETURNED_SQLSTATE               ); }
+RETURNS                           { return Symbol(RETURNS                         ); }
+REVOKE                            { return Symbol(REVOKE                          ); }
+RIGHT                             { return Symbol(RIGHT                           ); }
+ROLE                              { return Symbol(ROLE                            ); }
+ROLLBACK                          { return Symbol(ROLLBACK                        ); }
+ROLLUP                            { return Symbol(ROLLUP                          ); }
+ROUTINE                           { return Symbol(ROUTINE                         ); }
+ROUTINE_CATALOG                   { return Symbol(ROUTINE_CATALOG                 ); }
+ROUTINE_NAME                      { return Symbol(ROUTINE_NAME                    ); }
+ROUTINE_SCHEMA                    { return Symbol(ROUTINE_SCHEMA                  ); }
+ROW                               { return Symbol(ROW                             ); }
+ROWS                              { return Symbol(ROWS                            ); }
+ROW_COUNT                         { return Symbol(ROW_COUNT                       ); }
+ROW_NUMBER                        { return Symbol(ROW_NUMBER                      ); }
+SAVEPOINT                         { return Symbol(SAVEPOINT                       ); }
+SCALE                             { return Symbol(SCALE                           ); }
+SCHEMA                            { return Symbol(SCHEMA                          ); }
+SCHEMA_NAME                       { return Symbol(SCHEMA_NAME                     ); }
+SCOPE                             { return Symbol(SCOPE                           ); }
+SCOPE_CATALOG                     { return Symbol(SCOPE_CATALOG                   ); }
+SCOPE_NAME                        { return Symbol(SCOPE_NAME                      ); }
+SCOPE_SCHEMA                      { return Symbol(SCOPE_SCHEMA                    ); }
+SCROLL                            { return Symbol(SCROLL                          ); }
+SEARCH                            { return Symbol(SEARCH                          ); }
+SECOND                            { return Symbol(SECOND                          ); }
+SECTION                           { return Symbol(SECTION                         ); }
+SECURITY                          { return Symbol(SECURITY                        ); }
+SELECT                            { return Symbol(SELECT                          ); }
+SELF                              { return Symbol(SELF                            ); }
+SENSITIVE                         { return Symbol(SENSITIVE                       ); }
+SEPARATE                          { return Symbol(SEPARATE                        ); }
+SEQUENCE                          { return Symbol(SEQUENCE                        ); }
+SERIALIZABLE                      { return Symbol(SERIALIZABLE                    ); }
+SERVER_NAME                       { return Symbol(SERVER_NAME                     ); }
+SESSION                           { return Symbol(SESSION                         ); }
+SESSION_USER                      { return Symbol(SESSION_USER                    ); }
+SET                               { return Symbol(SET                             ); }
+SETS                              { return Symbol(SETS                            ); }
+SIGN                              { return Symbol(SIGN                            ); }
+SIMILAR                           { return Symbol(SIMILAR                         ); }
+SIMPLE                            { return Symbol(SIMPLE                          ); }
+SIZE                              { return Symbol(SIZE                            ); }
+SMALLINT                          { return Symbol(SMALLINT                        ); }
+SOME                              { return Symbol(SOME                            ); }
+SOURCE                            { return Symbol(SOURCE                          ); }
+SPACE                             { return Symbol(SPACE                           ); }
+SPECIFIC                          { return Symbol(SPECIFIC                        ); }
+SPECIFICTYPE                      { return Symbol(SPECIFICTYPE                    ); }
+SPECIFIC_NAME                     { return Symbol(SPECIFIC_NAME                   ); }
+SQL                               { return Symbol(SQL                             ); }
+SQLEXCEPTION                      { return Symbol(SQLEXCEPTION                    ); }
+SQLSTATE                          { return Symbol(SQLSTATE                        ); }
+SQLSTATE_TYPE                     { return Symbol(SQLSTATE_TYPE                   ); }
+SQLWARNING                        { return Symbol(SQLWARNING                      ); }
+SQRT                              { return Symbol(SQRT                            ); }
+START                             { return Symbol(START                           ); }
+STATE                             { return Symbol(STATE                           ); }
+STATEMENT                         { return Symbol(STATEMENT                       ); }
+static                            { return Symbol(static                          ); }
+STATIC                            { return Symbol(STATIC                          ); }
+STDDEV_POP                        { return Symbol(STDDEV_POP                      ); }
+STDDEV_SAMP                       { return Symbol(STDDEV_SAMP                     ); }
+STRUCTURE                         { return Symbol(STRUCTURE                       ); }
+STYLE                             { return Symbol(STYLE                           ); }
+SUBCLASS_ORIGIN                   { return Symbol(SUBCLASS_ORIGIN                 ); }
+SUBMULTISET                       { return Symbol(SUBMULTISET                     ); }
+SUBSTRING                         { return Symbol(SUBSTRING                       ); }
+SUM                               { return Symbol(SUM                             ); }
+SYMMETRIC                         { return Symbol(SYMMETRIC                       ); }
+SYSTEM                            { return Symbol(SYSTEM                          ); }
+SYSTEM_USER                       { return Symbol(SYSTEM_USER                     ); }
+TABLE                             { return Symbol(TABLE                           ); }
+TABLESAMPLE                       { return Symbol(TABLESAMPLE                     ); }
+TABLE_NAME                        { return Symbol(TABLE_NAME                      ); }
+TEMPORARY                         { return Symbol(TEMPORARY                       ); }
+THEN                              { return Symbol(THEN                            ); }
+TIES                              { return Symbol(TIES                            ); }
+TIME                              { return Symbol(TIME                            ); }
+TIMESTAMP                         { return Symbol(TIMESTAMP                       ); }
+TIMEZONE_HOUR                     { return Symbol(TIMEZONE_HOUR                   ); }
+TIMEZONE_MINUTE                   { return Symbol(TIMEZONE_MINUTE                 ); }
+TO                                { return Symbol(TO                              ); }
+TOP_LEVEL_COUNT                   { return Symbol(TOP_LEVEL_COUNT                 ); }
+TRAILING                          { return Symbol(TRAILING                        ); }
+TRANSACTION                       { return Symbol(TRANSACTION                     ); }
+TRANSACTIONS_COMMITTED            { return Symbol(TRANSACTIONS_COMMITTED          ); }
+TRANSACTIONS_ROLLED_BACK          { return Symbol(TRANSACTIONS_ROLLED_BACK        ); }
+TRANSACTION_ACTIVE                { return Symbol(TRANSACTION_ACTIVE              ); }
+TRANSFORM                         { return Symbol(TRANSFORM                       ); }
+TRANSFORMS                        { return Symbol(TRANSFORMS                      ); }
+TRANSLATE                         { return Symbol(TRANSLATE                       ); }
+TRANSLATION                       { return Symbol(TRANSLATION                     ); }
+TREAT                             { return Symbol(TREAT                           ); }
+TRIGGER                           { return Symbol(TRIGGER                         ); }
+TRIGGER_CATALOG                   { return Symbol(TRIGGER_CATALOG                 ); }
+TRIGGER_NAME                      { return Symbol(TRIGGER_NAME                    ); }
+TRIGGER_SCHEMA                    { return Symbol(TRIGGER_SCHEMA                  ); }
+TRIM                              { return Symbol(TRIM                            ); }
+TRUE                              { return Symbol(TRUE                            ); }
+TYPE                              { return Symbol(TYPE                            ); }
+UESCAPE                           { return Symbol(UESCAPE                         ); }
+UNBOUNDED                         { return Symbol(UNBOUNDED                       ); }
+UNCOMMITTED                       { return Symbol(UNCOMMITTED                     ); }
+UNDER                             { return Symbol(UNDER                           ); }
+UNION                             { return Symbol(UNION                           ); }
+UNIQUE                            { return Symbol(UNIQUE                          ); }
+UNKNOWN                           { return Symbol(UNKNOWN                         ); }
+UNNAMED                           { return Symbol(UNNAMED                         ); }
+UNNEST                            { return Symbol(UNNEST                          ); }
+unsigned                          { return Symbol(unsigned                        ); }
+UPDATE                            { return Symbol(UPDATE                          ); }
+UPPER                             { return Symbol(UPPER                           ); }
+USAGE                             { return Symbol(USAGE                           ); }
+USER                              { return Symbol(USER                            ); }
+USER_DEFINED_TYPE_CATALOG         { return Symbol(USER_DEFINED_TYPE_CATALOG       ); }
+USER_DEFINED_TYPE_CODE            { return Symbol(USER_DEFINED_TYPE_CODE          ); }
+USER_DEFINED_TYPE_NAME            { return Symbol(USER_DEFINED_TYPE_NAME          ); }
+USER_DEFINED_TYPE_SCHEMA          { return Symbol(USER_DEFINED_TYPE_SCHEMA        ); }
+USING                             { return Symbol(USING                           ); }
+VALUE                             { return Symbol(VALUE                           ); }
+VALUES                            { return Symbol(VALUES                          ); }
+VARCHAR                           { return Symbol(VARCHAR                         ); }
+VARYING                           { return Symbol(VARYING                         ); }
+VAR_POP                           { return Symbol(VAR_POP                         ); }
+VAR_SAMP                          { return Symbol(VAR_SAMP                        ); }
+VIEW                              { return Symbol(VIEW                            ); }
+volatile                          { return Symbol(VOLATILE                        ); }
+WHEN                              { return Symbol(WHEN                            ); }
+WHENEVER                          { return Symbol(WHENEVER                        ); }
+WHERE                             { return Symbol(WHERE                           ); }
+WIDTH_BUCKET                      { return Symbol(WIDTH_BUCKET                    ); }
+WINDOW                            { return Symbol(WINDOW                          ); }
+WITH                              { return Symbol(WITH                            ); }
+WITHIN                            { return Symbol(WITHIN                          ); }
+WITHOUT                           { return Symbol(WITHOUT                         ); }
+WORK                              { return Symbol(WORK                            ); }
+WRITE                             { return Symbol(WRITE                           ); }
+YEAR                              { return Symbol(YEAR                            ); }
+ZONE                              { return Symbol(ZONE                            ); }
+                                                                                  ); }
+
+{SPACES}                        { /* nada */        }
+
+"<>"                   { return Symbol(NE);      }
+">="                   { return Symbol(GE);      }
+"<="                   { return Symbol(LE);      }
+\"                     { return Symbol(DQOUOTE); }
+\%                     { return Symbol(PERCENT); }
+\&                     { return Symbol(AMPERSAND); }
+\'                     { return Symbol(QUOTE); }
+\(                     { return Symbol(LPAR); }
+\)                     { return Symbol(RPAR); }
+\*                     { return Symbol(ASTERISK); }
+\+                     { return Symbol(PLUS); }
+\,                     { return Symbol(COMMA); }
+\-                     { return Symbol(MINUS); }
+\.                     { return Symbol(DOT); }
+\/                     { return Symbol(SLASH); }
+\:                     { return Symbol(COLON); }
+\;                     { return Symbol(SEMICOLON); }
+\<                     { return Symbol(LT); } 
+\=                     { return Symbol(EQUAL); }    
+\>                     { return Symbol(GT); }
+\?                     { return Symbol(QUESTION); }
+\[                     { return Symbol(LCOR); }
+"??("                  { return Symbol(LCOR); }
+\]                     { return Symbol(RCOR); }
+"??)"                  { return Symbol(RCOR); }
+\^                     { return Symbol(CIRCUMFLEX); }
+\_                     { return Symbol(UNDERSCORE); }
+\|                     { return Symbol(VBAR); }
+\{                     { return Symbol(LBRA); }
+\}                     { return Symbol(RBRA); }
+

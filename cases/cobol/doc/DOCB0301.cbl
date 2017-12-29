@@ -1,0 +1,27 @@
+      * SDP DESCRIPTION
+      *  DOC - Programa principal
+      * SDP END
+
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. DOCB0301.
+
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+
+       01  RUTINAS.
+           03 DOCB0301  PIC X(08) VALUE 'DOCB0301'.       
+           03 DOCB0311  PIC X(08) VALUE 'DOCB0311'.
+           03 DOCB0321  PIC X(08) VALUE 'DOCB0321'.
+           03 DOCB0322  PIC X(08) VALUE 'DOCB0322'.
+
+       01  DATOS.
+           03 CALLING  PIC X(08) VALUE 'DOCB0311'.
+
+       PROCEDURE DIVISION.
+       INICIO.
+           MOVE DOCB0301 TO CALLING.
+           CALL 'DOCB0311' USING DATOS.
+           MOVE DOCB0301 TO CALLING.
+           CALL 'DOCB0321' USING DATOS.
+           GOBACK.

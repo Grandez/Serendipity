@@ -1,0 +1,95 @@
+package com.jgg.sdp.parser.lang;
+
+import java_cup.runtime.*;
+import com.jgg.sdp.module.base.*;
+import com.jgg.sdp.module.factorias.*;
+import com.jgg.sdp.core.ctes.*;
+import com.jgg.sdp.core.config.*;
+import com.jgg.sdp.core.exceptions.*;
+import com.jgg.sdp.parser.base.*;
+import com.jgg.sdp.parser.code.*;
+
+parser code {:
+      String fullName   = ((CobolLexer) getScanner()).getFullName();
+      Module module     = ModulesFactory.getModule(fullName);
+      Configuration cfg = Configuration.getInstance();
+          
+      public String getFullName() { return fullName; }
+
+      public void syntax_error(Symbol token) {
+          Symbol s = (Symbol) token.value;
+          int col = cfg.getInteger(CFG.MARGIN_LEFT,  0);
+          col = col + s.right + 1;
+
+          throw new ParseException(MSG.EXCEPTION_SYNTAX, 
+                                   module.getName(), 
+                                   s.left + 1, 
+                                   col, 
+                                   (String) s.value);
+      }
+
+      public void unrecovered_syntax_error(Symbol token) throws Exception {
+          Symbol s = (Symbol) token.value;
+          throw new ParseException(MSG.EXCEPTION_CUP, 
+                                  module.getName(), s.left + 1, s.right + 1, (String) s.value); 
+      }
+:}
+
+action code {:
+   Module      module   = null;
+   CallCode    code     = null;
+
+   public void initActionClass(String name) {
+      module = ModulesFactory.getModule(name);
+      code = new CallCode(module);
+   }
+
+   public String getSymbolName(Symbol s)    { return (String) s.value; }
+
+:}
+
+init with {:
+  action_obj.initActionClass(fullName);
+:}
+
+scan with {:
+    Symbol sym = ((GenericScanner) getScanner()).tokenCobol();
+    return (sym!=null) ? sym : getSymbolFactory().newSymbol("END_OF_FILE",EOF_sym());
+ 
+:}
+
+terminal Symbol CALL , ID , LITERAL ;
+
+non terminal module                 ;
+non terminal bloque_codigo , codigo ;
+non terminal stmtCall      , target ; 
+
+
+/**********************************************************************/
+/**********************************************************************/
+/**********************************************************************/
+/*                        INICIO PARSER                               */
+/**********************************************************************/
+/**********************************************************************/
+/**********************************************************************/
+
+module        ::= bloque_codigo
+              | 
+              ;
+
+bloque_codigo ::= codigo
+              |   bloque_codigo codigo
+              ;
+               
+codigo        ::= stmtCall
+              |   ID
+              ;
+              
+              
+stmtCall      ::=  CALL:s target
+              ;
+
+target        ::= ID:i        {: code.callDynamic(i); :}
+              |   LITERAL:l   {: code.callStatic (l); :}
+              ;
+                          

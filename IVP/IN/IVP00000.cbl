@@ -1,0 +1,11 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.    IVP00000.
+       ENVIRONMENT DIVISION.
+       DATA DIVISION.
+       
+       WORKING-STORAGE SECTION.
+       
+       PROCEDURE DIVISION.
+       INICIO.
+           DISPLAY 'HOLA MUNDO'.
+           GOBACK.

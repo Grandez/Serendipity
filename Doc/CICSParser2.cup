@@ -1,0 +1,144 @@
+package com.sdp.parser.lang;
+
+import java_cup.runtime.*;
+
+import com.sdp.module.base.*;
+import com.sdp.module.items.*;
+import com.sdp.module.factorias.*;
+import com.sdp.core.ctes.*;
+import com.sdp.core.config.*;
+import com.sdp.core.exceptions.*;
+import com.sdp.parser.info.*;
+import com.sdp.parser.base.*;
+import com.sdp.parser.work.*;
+import com.sdp.parser.code.*;
+
+parser code {:
+      String fullName   = ((ILexer) getScanner()).getFullName();
+      Module module     = ModulesFactory.getModule(fullName);
+      Summary summary   = module.getSummary();
+      Configuration cfg = Configuration.getInstance();
+          
+      public String getFullName() { return fullName; }
+
+      public void syntax_error(Symbol token) {
+           
+          Symbol s = (Symbol) token.value;
+          int col = cfg.getInteger(CFG.MARGIN_LEFT,  0);
+          col = col + s.right + 1;
+
+          throw new ParseException(MSG.EXCEPTION_SYNTAX, 
+                                   module.getName(), 
+                                   s.left + 1, 
+                                   col, 
+                                   (String) s.value);
+      }
+
+      public void unrecovered_syntax_error(Symbol token) throws Exception {
+          Symbol s = (Symbol) token.value;
+          throw new ParseException(MSG.EXCEPTION_CUP, 
+                                  module.getName(), s.left + 1, s.right + 1, (String) s.value); 
+      }
+:}
+
+action code {:
+   Module      module   = null;
+   Summary     summary  = null;
+   Persistence fichero  = null;
+   CICSCode    code     = null;
+   Sections    sections = null;
+      
+   Variable    currVar  = null;
+   Statement lastStmt = null;  // Ultima instruccion
+   
+   boolean   hasEndProgram = false; // Hay STOPRUN o GOBACK?
+    
+   boolean master     = false;  // El fichero es el maestro?   
+   int     numFillers = 0;
+          
+   public void initActionClass(String name) {
+      module = ModulesFactory.getModule(name);
+      summary = module.getSummary();
+      sections = module.getSections();
+      code = new CICSCode(module);
+   }
+
+   public String getSymbolName(Symbol s)    { return (String) s.value; }
+   public void debug(String txt) { System.err.println(txt); }
+
+:}
+
+init with {:
+  action_obj.initActionClass(fullName);
+:}
+
+scan with {:
+    Symbol sym = ((GenericScanner) getScanner()).tokenCobol();
+    return (sym!=null) ? sym : getSymbolFactory().newSymbol("END_OF_FILE",EOF_sym());
+ 
+:}
+
+/****************************************************************************/
+/****************************************************************************/
+/*               VERBOS                                                     */
+/****************************************************************************/
+/****************************************************************************/
+
+terminal Symbol ID        ; 
+terminal Symbol NUMBER    ;
+terminal Symbol LITERAL   ; 
+terminal Symbol LPAR      ;
+terminal Symbol RPAR      ;
+
+/****************************************************************************/
+/****************************************************************************/
+/*               NO TERMINALES                                              */
+/****************************************************************************/
+/****************************************************************************/
+
+non terminal  ax ;
+non terminal  cics_statement      ;
+non terminal  cics_stmt           ;
+non terminal  cics_options        ;
+non terminal  cics_parm_attr_list ;
+non terminal  cics_parm_attr      ;
+non terminal  cics_parm           ;
+non terminal  cics_value          ;
+
+/**********************************************************************/
+/**********************************************************************/
+/**********************************************************************/
+/*                        INICIO PARSER                               */
+/**********************************************************************/
+/**********************************************************************/
+/**********************************************************************/
+
+ax ::= cics_statement
+   ;
+   
+cics_statement ::= cics_stmt cics_options
+               ;
+               
+cics_stmt ::= ID
+          ;
+          
+cics_options ::= cics_parm_attr_list
+             |
+             ;
+             
+cics_parm_attr_list ::= cics_parm_attr
+                    |   cics_parm_attr_list cics_parm_attr
+                    ;
+                                 
+cics_parm_attr ::= ID cics_parm
+               ;
+               
+cics_parm ::= LPAR cics_value RPAR
+          |
+          ;             
+
+cics_value ::= ID
+           |   NUMBER
+           |   LITERAL
+           ;
+                                                      
