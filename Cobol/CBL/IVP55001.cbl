@@ -1,0 +1,29 @@
+      *> SDP DESC SQL SET
+      *> SDP IVP 0 Issues.getCount = 1 - SET no permitido
+
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.    IVP55001.
+       AUTHOR.        USRIVP0 - SERENDIPITY
+       DATE-COMPILED. 01/01/2015.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       EXEC SQL INCLUDE SQLCA END-EXEC.
+       
+       01  DATOS.
+           03 NUM01 PIC 9(03) VALUE ZEROS.
+           03 NUM02 PIC 9(03) VALUE 1.
+           03 NUM03 PIC 9(03) VALUE ZEROS.
+
+       EXEC SQL BEGIN DECLARE SECTION END-EXEC.    
+       01  DATOS-SQL.
+           03 TMS1  PIC X(26).
+       EXEC SQL END DECLARE SECTION END-EXEC.
+       
+       PROCEDURE DIVISION.
+       INICIO.
+           COMPUTE NUM03 = NUM01 + NUM02.
+           EXEC SQL SET :TMS1 = CURRENT_TIMESTAMP END-EXEC
+           GOBACK.
+ 
+    
