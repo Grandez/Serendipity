@@ -1,0 +1,921 @@
+      ******************************************************************
+      *                                                                *
+      *         I D E N T I F I C A T I O N   D I V I S I O N          *
+      *                                                                *
+      ******************************************************************
+       IDENTIFICATION DIVISION.
+
+       PROGRAM-ID.   AC2CCS05.
+       AUTHOR.       SOFTTE (ALHD)
+       DATE-WRITTEN. 08-01-10.
+       DATE-COMPILED.
+
+      ******************************************************************
+      *                                                                *
+      *                                                                *
+      * CONSULTA DE CUENTAS ASOCIADAS DE UN CLIENTE, ENVIA HASTA 70    *
+      * CUENTAS POR BLOQUE HASTA COMPLETAR EL TOTAL DE CUENTAS         *
+      * ASOCIADAS DEL CLIENTE, INTERACTUA CON LA RUTINA DE PERSONAS    *
+      * PE2C1520.                                                      *
+      *                                                                *
+      ******************************************************************
+      ******************************************************************
+      *                 MODIFICACIONES                                 *
+      *                 --------------                                 *
+      *  CODIGO   USUARIO   FECHA           DESCRIPCION                *
+      *  ------- --------- --------    -----------------------------   *
+      * @STK-01  SOFTTEK   16-06-10   CAMBIO PARA EL PROCESO DE CODIGO *
+      *          (PANE)               DE CUENTAS, SE MODIFICARA EL     *
+      *                               CAMPO DE NUMERO DE CLIENTE       *
+      *                               DEJANDOLO ALFANUMERICO           *
+      *                                                                *
+      ******************************************************************
+      ******************************************************************
+      *                                                                *
+      *        E N V I R O N M E N T         D I V I S I O N           *
+      *                                                                *
+      ******************************************************************
+       ENVIRONMENT DIVISION.
+
+       CONFIGURATION SECTION.
+
+       DATA DIVISION.
+
+      ******************************************************************
+      *         W O R K I N G   S T O R A G E   S E C T I O N          *
+      ******************************************************************
+       WORKING-STORAGE SECTION.
+      *----------------------------------------------------------------*
+      *                       AREA  DE SWITCHES                        *
+      *----------------------------------------------------------------*
+       01 SWITCHES.
+          05 WSS-FIN-CUENTAS             PIC X      VALUE 'N'.
+             88 WSS-FIN-CTAS-SI                     VALUE 'S'.
+             88 WSS-FIN-CTAS-NO                     VALUE 'N'.
+
+          05 WSS-FECHA-VALIDA            PIC X      VALUE 'N'.
+             88 WSS-FEC-VALIDA                      VALUE 'S'.
+             88 WSS-FEC-NO-VALIDA                   VALUE 'N'.
+
+          05 WSS-FIN-CURSOR              PIC X      VALUE 'N'.
+             88 WSS-FIN-CURSOL-SI                   VALUE 'S'.
+             88 WSS-FIN-CURSOL-NO                   VALUE 'N'.
+
+          05 WSS-CTA-EXISTE              PIC X      VALUE 'N'.
+             88 WSV-CTA-SI-EXISTE                   VALUE 'S'.
+             88 WSV-CTA-NO-EXISTE                   VALUE 'N'.
+
+          05 WSS-HAY-MAS-DATOS           PIC X      VALUE 'N'.
+             88 WSS-MAS-DATOS-SI                    VALUE 'S'.
+             88 WSS-MAS-DATOS-NO                    VALUE 'N'.
+
+          05 WSS-ENC-MAE                 PIC X      VALUE 'N'.
+             88 WSS-ENC-MAE-SI                      VALUE 'S'.
+             88 WSS-ENC-MAE-NO                      VALUE 'N'.
+
+      *----------------------------------------------------------------*
+      *                AREA DE CONSTANTES                              *
+      *----------------------------------------------------------------*
+       01 WSC-CONSTANTES.
+          05 WSC-CS                   PIC  X(02)      VALUE 'CS'.
+          05 WSC-QG1CABC              PIC  X(07)      VALUE 'QG1CABC'.
+          05 WSC-PROGRAMA             PIC  X(08)      VALUE 'AC2CCS05'.
+          05 WSC-NOM-PE2C1520         PIC X(008)      VALUE 'PE2C1520'.
+          05 WSC-00                   PIC  X(02)      VALUE '00'.
+          05 WSC-20                   PIC  X(02)      VALUE '20'.
+          05 WSC-30                   PIC  X(02)      VALUE '30'.
+          05 WSC-40                   PIC  X(02)      VALUE '40'.
+          05 WSC-60                   PIC  X(02)      VALUE '60'.
+          05 WSC-070                  PIC  9(02)      VALUE 70.
+          05 WSC-0                    PIC  9(01)      VALUE 0.
+          05 WSC-1                    PIC  9(01)      VALUE 1.
+          05 WSC-10                   PIC  9(02)      VALUE 10.
+          05 WSC-012                  PIC  9(02)      VALUE 12.
+          05 WSC-1000                 PIC  9(04)      VALUE 1000.
+          05 WSC-1001                 PIC  9(04)      VALUE 1001.
+          05 WSC-PF1                  PIC  X(04)      VALUE '+PF1'.
+          05 WSC-N                    PIC  X(01)      VALUE 'N'.
+          05 WSC-S                    PIC  X(01)      VALUE 'S'.
+          05 WSC-P                    PIC  X(01)      VALUE 'P'.
+          05 WSC-ALF-1                PIC  X(01)      VALUE '1'.
+          05 WSC-ALF-01               PIC  X(02)      VALUE '01'.
+          05 WSC-ALF-04               PIC  X(02)      VALUE '04'.
+          05 WSC-ALF-11               PIC  X(02)      VALUE '11'.
+          05 WSC-ALF-12               PIC  X(02)      VALUE '12'.
+          05 WSC-ALF-13               PIC  X(02)      VALUE '13'.
+          05 WSC-ALF-14               PIC  X(02)      VALUE '14'.
+          05 WSC-ALF-20               PIC  X(02)      VALUE '20'.
+          05 WSC-ALF-21               PIC  X(02)      VALUE '21'.
+          05 WSC-ALF-22               PIC  X(02)      VALUE '22'.
+          05 WSC-ALF-26               PIC  X(02)      VALUE '26'.
+          05 WSC-ALF-27               PIC  X(02)      VALUE '27'.
+          05 WSC-ALF-28               PIC  X(02)      VALUE '28'.
+          05 WSC-ALF-29               PIC  X(02)      VALUE '29'.
+          05 WSC-ALF-96               PIC  X(02)      VALUE '96'.
+          05 WSC-ALF-97               PIC  X(02)      VALUE '97'.
+          05 WSC-ALF-98               PIC  X(02)      VALUE '98'.
+          05 WSC-ALF-99               PIC  X(02)      VALUE '99'.
+          05 WSC-MXP                  PIC  X(03)      VALUE 'MXP'.
+          05 WSC-ACE0143              PIC  X(07)      VALUE 'ACE0143'.
+          05 WSC-ACE0042              PIC  X(07)      VALUE 'ACE0042'.
+          05 WSC-ACA0049              PIC  X(07)      VALUE 'ACA0049'.
+          05 WSC-ACE0049              PIC  X(07)      VALUE 'ACE0049'.
+          05 WSC-ACE0141              PIC  X(07)      VALUE 'ACE0141'.
+          05 WSC-ACA0048              PIC  X(07)      VALUE 'ACA0048'.
+          05 WSC-ACE0048              PIC  X(07)      VALUE 'ACE0048'.
+          05 WSC-PERIODO              PIC  X(07)      VALUE 'PERIODO'.
+          05 WSC-BORRA-TS             PIC  X(20)
+                                 VALUE '100020-BORRA-TS'.
+          05 WSC-CLIENTE              PIC  X(20)
+                                 VALUE 'NUMERO DE CLIENTE'.
+          05 WSC-WRITE-TS             PIC  X(30)
+                                 VALUE 'PARR. ESCRIBE-TS-1'.
+          05 WSC-ERR-CTA              PIC  X(30)
+                                 VALUE 'T.CTA. ERR'.
+          05 WSC-CALL-RUTINA          PIC  X(30)
+                                 VALUE '200120-LLAMA-RUTINA'.
+          05 CTE-TIPO-CTA             PIC X(02).
+             88 CTE-TIPO-CTA-OK  VALUE ARE '01' '04' '11'
+                                           '12' '13' '14' '20'
+                                           '21' '22' '26' '27'
+                                           '28' '29' '96' '97'
+                                           '98' '99'.
+      *
+          05 CTE-TIPO-CTA-MAE          PIC X(02).
+             88 CTE-CTA-MAE-OK   VALUE ARE '01' '04' '11'
+                                           '12' '13' '14'
+                                           '26' '27' '28'
+                                           '29'.
+      *
+          05 CTE-DESC-CHEQUES          PIC X(10) VALUE 'CHEQUES'.
+          05 CTE-DESC-AHORRO           PIC X(10) VALUE 'AHORRO '.
+          05 CTE-DESC-INVER            PIC X(10) VALUE 'INVERSION'.
+          05 CTE-DESC-FONDOS           PIC X(10) VALUE 'FONDOS'.
+          05 CTE-DESC-PATRIMO          PIC X(10) VALUE 'PATRIMONIA'.
+          05 CTE-DESC-BURSATIL         PIC X(10) VALUE 'BURSATIL'.
+          05 CTE-DESC-CARTERA          PIC X(10) VALUE 'CARTERA'.
+
+      *----------------------------------------------------------------*
+      *                AREA DE VARIABLES AUXILIARES                    *
+      *----------------------------------------------------------------*
+       01 WSV-VARIABLES.
+          03 WP-CTA                      PIC X(10) VALUE SPACES.
+          03 WSV-REFERENCIA              PIC X(20) VALUE SPACES.
+          03 WSV-OBJETO                  PIC X(08) VALUE SPACES.
+          03 WSV-TEXTO                   PIC X(50) VALUE SPACES.
+
+          03 WSV-CTAS-SOLICI             PIC 9(04) VALUE ZEROS.
+          03 WSA-CTAS-GRAB               PIC 9(04) VALUE ZEROS.
+          03 WSV-DATOS-DE-TS.
+             05 WSV-LONG-TS1             PIC S9(04)  COMP.
+             05 WSV-LONG-TS2             PIC S9(04)  COMP.
+             05 WTS-NOMTS.
+                10 WSV-NOMTS-PREFIJO     PIC X(04).
+                10 WSV-NOMTS-SUFIJO      PIC X(04).
+             05 WSV-LINEA-1.
+                10 WSV-SALIDA.
+                   15 WSV-CUENTA         PIC X(10).
+                   15 WSV-CONCEPTO       PIC X(10).
+                   15 WSV-DIVISA         PIC X(04).
+          03 WSV-CTA-CTE.
+             05 WSV-CODISER           PIC 9(02).
+             05 WSV-NUM-CTA           PIC 9(08).
+          03 WSV-FEC-SIS.
+             10 WSV-AAAA-FEC             PIC 9(04).
+             10 WSV-MM-FEC               PIC 9(02).
+             10 WSV-DD-FEC               PIC 9(02).
+          03 WSV-FEC-SIS-R.
+             10 WSV-AAAA-FEC-R           PIC 9(04).
+             10 G1-FEC-R                 PIC X VALUE '-'.
+             10 WSV-MM-FEC-R             PIC 9(02).
+             10 G2-FEC-R                 PIC X VALUE '-'.
+             10 WSV-DD-FEC-R             PIC 9(02).
+          03 WSV-ULT-PERIODO             PIC 9(06).
+          03 FILLER REDEFINES WSV-ULT-PERIODO.
+             10 WSV-ULTPER-AA            PIC 9(04).
+             10 WSV-ULTPER-MM            PIC 9(02).
+
+        01 VARIABLES.
+           05 WSV-NUMCLIEN               PIC X(08).
+           05 WSV-ULT-RELACION.
+              10 WSV-ULT-CUENTA.
+                 15 MSV-PECENTID         PIC X(04).
+                 15 MSV-OFIAPE           PIC X(04).
+                 15 MSV-CODISER          PIC X(02).
+                 15 MSV-NUMECTA          PIC X(08).
+              10 WSV-ULT-PARTICIP.
+                 15 MSV-CLAINTER         PIC X(01).
+                 15 MSV-SECINTER         PIC X(02).
+
+           05 WSV-TIPO-CTA               PIC X(02).
+           05 WS-CONCEPTO                PIC X(10).
+           05 WSV-PERIODO.
+              10 WSV-PERI-VALIDAR        PIC 9(06).
+              10 FILLER REDEFINES WSV-PERI-VALIDAR.
+                 15 WSV-AAAA-PERI        PIC 9(04).
+                 15 WSV-MM-PERI          PIC 9(02).
+
+           05 WSV-PERIODO-AUX.
+              10 WSV-AAAA-AUX            PIC 9(04).
+              10 WSV-MM-AUX              PIC 9(02).
+              10 WSV-DD-AUX              PIC 9(02).
+
+           05 WSV-FEC-SIS-DB2            PIC X(10).
+      *----------------------------------------------------------------*
+      *                     AREA DE INDICES                            *
+      *----------------------------------------------------------------*
+       01 INDICES.
+          05 WSI-IND-CUENTAS          PIC 9(04) VALUE ZEROS.
+          05 WSI-IND-ARREGLO          PIC 9(04) VALUE ZEROS.
+          05 WSI-IND-SOLICITUD        PIC 9(04) VALUE ZEROS.
+          05 WSI-IND-CUENTA2          PIC 9(04) VALUE ZEROS.
+          05 WSI-IND-MAS-DAT          PIC X(01) VALUE SPACES.
+      *----------------------------------------------------------------*
+      *                     AREA DE OCCURS                             *
+      *----------------------------------------------------------------*
+       01 TABLA-CUENTAS.
+          05 WST-LISTADO-CTAS OCCURS 070 TIMES.
+             10 WST-NUM-CTA.
+                15 WST-CODISER            PIC X(02).
+                15 WST-NUMECTA            PIC X(08).
+       01 TABLA-SOLICITUDES.
+          05 WST-SOLICI-CTAS OCCURS 1000 TIMES.
+             10 WST-NUM-CTA-SOL.
+                15 WST-CUENTA-SOL          PIC X(10).
+                15 WST-FECHA-VEN           PIC X(10).
+                15 WST-STATUS              PIC X(03).
+      *----------------------------------------------------------------*
+      *                           AREA DE COPYS                        *
+      *----------------------------------------------------------------*
+      *--                DEFINICION ENTRADA GESTION ABEND            --*
+       01  WS-QGECABC-01.
+           COPY QGECABC.
+      *
+       01 PE2C1520-AREA.
+          COPY PEWC1510.
+      *
+      *COPY CVRC45S2.
+      *
+      *----------------------------------------------------------------*
+      *                           AREA DE CURSORES                     *
+      *----------------------------------------------------------------*
+           EXEC SQL INCLUDE SQLCA END-EXEC.
+           EXEC SQL INCLUDE ACGTSOL END-EXEC.
+           EXEC SQL INCLUDE ACGTCDS END-EXEC.
+           EXEC SQL INCLUDE BGGTMAE END-EXEC.
+
+           EXEC SQL
+             DECLARE CURSOL CURSOR FOR
+             SELECT  T2.NUM_CUENTA,
+                     T1.TIPO_SOLICITUD,
+                     T1.FECHA_ALTA,
+                     T1.FECHA_VENCIMIENTO,
+                     T1.STATUS_SOL
+             FROM    ACDTSOL T1, ACDTCDS T2
+      *@STK-01-I
+      *      WHERE T1.NUM_CLIENTE_CLT = :DCLACDTSOL.NUM-CLIENTE-CLT
+             WHERE T1.BASE_COMISION   = :DCLACDTSOL.BASE-COMISION
+      *@STK-01-F
+             AND T1.TIPO_SOLICITUD    = :DCLACDTSOL.TIPO-SOLICITUD
+             AND T1.PERIODO           = :DCLACDTSOL.PERIODO
+             AND T1.FECHA_VENCIMIENTO >= :DCLACDTSOL.FECHA-VENCIMIENTO
+             AND T1.FOLIO             = T2.FOLIO
+           END-EXEC.
+      *
+
+      ******************************************************************
+      *      L I N K A G E                 S E C T I O N               *
+      ******************************************************************
+       LINKAGE SECTION.
+
+      *--       BLOQUE DE COMUNICACIONES CON LA ARQUITECTURA:        --*
+       01 DFHCOMMAREA.
+          COPY QGECCAA.
+          COPY ACMWCS05.
+
+      *****************************************************************
+      *                                                               *
+      *           P R O C E D U R E      D I V I S I O N              *
+      *                                                               *
+      *****************************************************************
+       PROCEDURE DIVISION.
+
+       MAINLINE.
+
+           PERFORM  100000-INICIO
+
+           PERFORM  200000-PROCESO
+
+           PERFORM  300000-FINAL.
+
+      ******************************************************************
+      * 100000-INICIO.                                                 *
+      *                                                                *
+      ******************************************************************
+       100000-INICIO.
+
+           INITIALIZE  WSV-VARIABLES
+                       VARIABLES
+                       INDICES
+                       SWITCHES
+
+           SET ADDRESS OF ACMWCS05         TO CAA-PTR-COPYIN
+           SET CAA-88-ACCION-TERMINAL      TO TRUE
+           MOVE SPACES                     TO CAA-COD-ERROR
+
+           PERFORM 100005-FECHA-DEL-SISTEMA
+           PERFORM 100020-BORRA-TS
+           PERFORM 100040-LIMPIA-ARREGLO
+           PERFORM 100070-MUEVE-CAMPOS-ENTRADA
+
+           EXEC CICS
+                IGNORE CONDITION ERROR
+           END-EXEC
+
+           IF EIBRESP NOT = DFHRESP(NORMAL)
+              MOVE 'ERROR EN CICS IGNORE'  TO ABC-REFERENCIA
+              MOVE '100000-INICIO'         TO ABC-OBJETO-ERROR
+           END-IF
+           .
+      ******************************************************************
+      * 100005-FECHA-DEL-SISTEMA                                       *
+      *                                                                *
+      ******************************************************************
+       100005-FECHA-DEL-SISTEMA.
+      *
+      *    ACCEPT WSV-FEC-SIS          FROM DATE
+      *    MOVE WSV-AAAA-FEC           TO WSV-AAAA-FEC-R
+      *    COMPUTE WSV-ULTPER-AA = WSV-AAAA-FEC - WSC-10
+      *    MOVE WSV-MM-FEC             TO WSV-MM-FEC-R
+      *                                   WSV-ULTPER-MM
+      *    MOVE WSV-DD-FEC             TO WSV-DD-FEC-R
+           EXEC SQL
+                SET :WSV-FEC-SIS-DB2 = CURRENT_DATE
+           END-EXEC
+
+           MOVE WSV-FEC-SIS-DB2(1:4)      TO WSV-AAAA-FEC
+           MOVE WSV-FEC-SIS-DB2(6:2)      TO WSV-MM-FEC
+           MOVE WSV-FEC-SIS-DB2(9:2)      TO WSV-DD-FEC
+
+           MOVE WSV-AAAA-FEC          TO WSV-AAAA-FEC-R
+
+           COMPUTE WSV-ULTPER-AA = WSV-AAAA-FEC - WSC-10
+
+           MOVE WSV-MM-FEC            TO  WSV-MM-FEC-R
+                                          WSV-ULTPER-MM
+
+           MOVE WSV-DD-FEC            TO  WSV-DD-FEC-R
+           MOVE '-'                   TO  G1-FEC-R G2-FEC-R
+           .
+      ******************************************************************
+      * 100020-BORRA-TS.                                               *
+      *                                                                *
+      ******************************************************************
+       100020-BORRA-TS.
+      *
+           MOVE CAA-TERMINAL            TO WSV-NOMTS-SUFIJO
+           MOVE WSC-PF1                 TO WSV-NOMTS-PREFIJO
+      *
+           EXEC CICS
+              DELETEQ TS
+              QUEUE (WTS-NOMTS)
+              NOHANDLE
+           END-EXEC
+
+           EVALUATE EIBRESP
+               WHEN (DFHRESP(NORMAL))
+               WHEN (DFHRESP(QIDERR))
+                   CONTINUE
+
+               WHEN OTHER
+                   MOVE WSC-BORRA-TS     TO WSV-REFERENCIA
+                   PERFORM 999700-ABEND
+           END-EVALUATE
+           .
+      ******************************************************************
+      * 100040-LIMPIA-ARREGLO.                                         *
+      *                                                                *
+      ******************************************************************
+       100040-LIMPIA-ARREGLO.
+      *
+           PERFORM VARYING WSI-IND-CUENTAS FROM WSC-1 BY WSC-1
+                   UNTIL WSI-IND-CUENTAS > WSC-070
+                   MOVE SPACES        TO WST-CODISER(WSI-IND-CUENTAS)
+                                         WST-NUMECTA(WSI-IND-CUENTAS)
+           END-PERFORM
+      *
+           PERFORM VARYING WSI-IND-SOLICITUD FROM  WSC-1 BY WSC-1
+                   UNTIL WSI-IND-SOLICITUD > WSC-1000
+                   MOVE SPACES     TO WST-CUENTA-SOL(WSI-IND-SOLICITUD)
+                   MOVE ZEROES     TO WST-FECHA-VEN(WSI-IND-SOLICITUD)
+                   MOVE SPACES     TO WST-STATUS(WSI-IND-SOLICITUD)
+           END-PERFORM
+           .
+      ******************************************************************
+      * 100070-MUEVE-CAMPOS-ENTRADA.                                   *
+      *                                                                *
+      ******************************************************************
+       100070-MUEVE-CAMPOS-ENTRADA.
+      *
+      *@STK-01-I
+      *    IF (ACS5-NUMCLIE = SPACES OR
+      *        ACS5-NUMCLIE = LOW-VALUES)
+           IF  ACS5-NUMCLIE = SPACES
+      *@STK-01-F
+               MOVE WSC-ACE0048         TO CAA-COD-ERROR
+               MOVE WSC-CLIENTE         TO CAA-VAR1-ERROR
+               PERFORM 300000-FINAL
+           ELSE
+               MOVE ACS5-NUMCLIE        TO WSV-NUMCLIEN
+           END-IF
+      *
+           IF (ACS5-PERIODO = SPACES OR
+               ACS5-PERIODO = LOW-VALUES)
+               MOVE WSC-ACE0048         TO CAA-COD-ERROR
+               MOVE WSC-PERIODO         TO CAA-VAR1-ERROR
+               PERFORM 300000-FINAL
+           ELSE
+               MOVE ACS5-PERIODO        TO WSV-PERIODO
+               PERFORM 100080-VALIDA-PERIODO
+               IF WSS-FEC-NO-VALIDA
+                  MOVE WSC-ACE0049     TO CAA-COD-ERROR
+                  MOVE WSC-PERIODO     TO CAA-VAR1-ERROR
+                  PERFORM 300000-FINAL
+               END-IF
+           END-IF
+      *
+           IF ACS5-ULTCTA > SPACES
+              MOVE ACS5-ULTCTA         TO WSV-ULT-RELACION
+           ELSE
+              MOVE SPACES              TO WSV-ULT-RELACION
+           END-IF
+           .
+      ******************************************************************
+      * 100080-VALIDA-PERIODO.                                         *
+      *                                                                *
+      ******************************************************************
+       100080-VALIDA-PERIODO.
+      *
+           SET WSS-FEC-NO-VALIDA       TO TRUE
+           IF WSV-AAAA-PERI >= WSV-ULTPER-AA
+              AND WSV-AAAA-PERI <= WSV-AAAA-FEC-R
+              IF WSV-MM-PERI >= WSC-1
+                 AND WSV-MM-PERI <= WSC-012
+                 IF WSV-PERI-VALIDAR >= WSV-ULT-PERIODO
+                    SET WSS-FEC-VALIDA TO TRUE
+                 END-IF
+              END-IF
+           END-IF
+           .
+      ******************************************************************
+      * 200000-PROCESO.                                                *
+      *                                                                *
+      ******************************************************************
+       200000-PROCESO.
+      *
+           PERFORM 200100-OBTEN-SOLICITUDES
+           PERFORM 200200-OBTEN-CUENTAS
+           PERFORM 200300-ENVIA-CUENTAS
+           .
+      ******************************************************************
+      * 200100-OBTEN-SOLICITUDES.                                      *
+      *                                                                *
+      ******************************************************************
+       200100-OBTEN-SOLICITUDES.
+      *
+           MOVE WSC-1                  TO WSI-IND-SOLICITUD
+           MOVE ZEROS                  TO WSV-CTAS-SOLICI
+           PERFORM 200110-ABRE-CURSOL
+           IF SQLCODE = 0
+              PERFORM 200120-FETCH-CURSOL
+              PERFORM 200130-LLENA-TAB-SOLICI UNTIL WSS-FIN-CURSOL-SI
+                      OR WSI-IND-SOLICITUD  > WSC-1000
+           END-IF
+           PERFORM 200140-CIERRA-CURSOL
+           .
+      ******************************************************************
+      * 200110-ABRE-CURSOL.                                            *
+      *                                                                *
+      ******************************************************************
+       200110-ABRE-CURSOL.
+      *
+      *@STK-01-I
+      *    MOVE  ACS5-NUMCLIE      TO NUM-CLIENTE-CLT OF DCLACDTSOL
+           MOVE  ZEROS             TO NUM-CLIENTE-CLT OF DCLACDTSOL
+           MOVE  ACS5-NUMCLIE      TO BASE-COMISION   OF DCLACDTSOL
+      *@STK-01-F
+           MOVE  WSC-CS            TO TIPO-SOLICITUD  OF DCLACDTSOL
+           MOVE  WSV-PERI-VALIDAR  TO PERIODO OF DCLACDTSOL
+           MOVE  WSV-FEC-SIS-R     TO FECHA-VENCIMIENTO OF DCLACDTSOL
+      *
+           EXEC SQL
+                OPEN CURSOL
+           END-EXEC
+
+           EVALUATE SQLCODE
+             WHEN ZERO
+                  CONTINUE
+             WHEN OTHER
+                  SET WSS-FIN-CURSOL-SI TO TRUE
+           END-EVALUATE
+           .
+      ******************************************************************
+      * 200120-FETCH-CURSOL.                                           *
+      *                                                                *
+      ******************************************************************
+       200120-FETCH-CURSOL.
+      *
+           EXEC SQL
+                FETCH CURSOL
+                INTO  :DCLACDTCDS.NUM-CUENTA,
+                      :DCLACDTSOL.TIPO-SOLICITUD,
+                      :DCLACDTSOL.FECHA-ALTA,
+                      :DCLACDTSOL.FECHA-VENCIMIENTO,
+                      :DCLACDTSOL.STATUS-SOL
+           END-EXEC
+      *
+           EVALUATE SQLCODE
+             WHEN ZERO
+                  CONTINUE
+             WHEN +100
+                  SET WSS-FIN-CURSOL-SI TO TRUE
+             WHEN OTHER
+                  SET WSS-FIN-CURSOL-SI TO TRUE
+           END-EVALUATE
+           .
+      ******************************************************************
+      * 200130-LLENA-TAB-SOLICI.                                       *
+      *                                                                *
+      ******************************************************************
+       200130-LLENA-TAB-SOLICI.
+           MOVE NUM-CUENTA          TO WST-CUENTA-SOL(WSI-IND-SOLICITUD)
+           MOVE FECHA-VENCIMIENTO   TO WST-FECHA-VEN(WSI-IND-SOLICITUD)
+           MOVE STATUS-SOL          TO WST-STATUS(WSI-IND-SOLICITUD)
+           ADD 1                    TO WSI-IND-SOLICITUD
+                                       WSV-CTAS-SOLICI
+           PERFORM 200120-FETCH-CURSOL
+           .
+      ******************************************************************
+      * 200140-CIERRA-CURSOL.                                          *
+      *                                                                *
+      ******************************************************************
+       200140-CIERRA-CURSOL.
+      *
+           EXEC SQL
+                CLOSE  CURSOL
+           END-EXEC
+      *
+           EVALUATE  SQLCODE
+             WHEN ZERO
+                  CONTINUE
+             WHEN OTHER
+                  SET WSS-FIN-CURSOL-SI TO TRUE
+           END-EVALUATE
+           .
+      ******************************************************************
+      * 200200-OBTEN-CUENTAS.                                          *
+      *                                                                *
+      ******************************************************************
+       200200-OBTEN-CUENTAS.
+      *
+           SET WSS-FIN-CTAS-NO         TO TRUE
+           MOVE WSC-1                  TO WSI-IND-CUENTAS
+           PERFORM UNTIL WSS-FIN-CTAS-SI
+                   PERFORM 200210-LLENA-CAMPOS-RUTINA
+                   PERFORM 200220-LLAMA-RUTINA
+                   PERFORM 200230-EVALUA-RESPUESTA
+           END-PERFORM
+           .
+      ******************************************************************
+      * 200210-LLENA-CAMPOS-RUTINA.                                    *
+      *                                                                *
+      ******************************************************************
+       200210-LLENA-CAMPOS-RUTINA.
+      *
+           SET W151-88-CONSULTA        TO TRUE
+           MOVE WSV-NUMCLIEN           TO W151-NUMCLIEN
+           MOVE WSV-ULT-RELACION       TO W151-ULT-RELACION
+           MOVE CAA-ENTIDAD            TO W151-CAA-ENTIDAD
+           .
+      ******************************************************************
+      * 200220-LLAMA-RUTINA.                                           *
+      *                                                                *
+      ******************************************************************
+       200220-LLAMA-RUTINA.
+      *
+           EXEC CICS
+                LINK PROGRAM(WSC-NOM-PE2C1520)
+                COMMAREA(PE2C1520-AREA)
+                LENGTH(LENGTH OF PE2C1520-AREA)
+           END-EXEC
+           .
+      ******************************************************************
+      * 200230-EVALUA-RESPUESTA.                                       *
+      *                                                                *
+      ******************************************************************
+       200230-EVALUA-RESPUESTA.
+      *
+           IF EIBRESP  = DFHRESP(NORMAL)
+              EVALUATE W151-CDRETORN
+                WHEN WSC-00
+                     IF W151-NUMOCUR > 00
+                        PERFORM 200131-LLENA-ARREGLO
+                        SET WSS-FIN-CTAS-SI          TO TRUE
+                        IF WSI-IND-CUENTAS > WSC-070
+                           SET WSS-MAS-DATOS-SI      TO TRUE
+                        ELSE
+                           SET WSS-MAS-DATOS-NO      TO TRUE
+                        END-IF
+                     ELSE
+                        MOVE WSC-ACA0048             TO CAA-COD-AVISO1
+      *                 NO EXISTE CTAS PARA EL CTE
+                        SET WSS-FIN-CTAS-SI          TO TRUE
+                        PERFORM 300000-FINAL
+                     END-IF
+      *          CONSULTA COMPLETA EXISTEN MAS DATOS
+                WHEN WSC-10
+                     PERFORM 200131-LLENA-ARREGLO
+                     IF WSI-IND-CUENTAS > WSC-070
+                        SET WSS-MAS-DATOS-SI         TO TRUE
+                        SET WSS-FIN-CTAS-SI          TO TRUE
+                     END-IF
+                WHEN WSC-20
+                     MOVE WSC-ACA0048                TO CAA-COD-AVISO1
+      *              'NO EXISTE CTAS PARA EL CTE'
+                     SET WSS-FIN-CTAS-SI             TO TRUE
+                     PERFORM 300000-FINAL
+                WHEN WSC-30
+                     MOVE WSC-ACE0141                TO CAA-COD-ERROR
+      *              'ERROR DATOS DE ENTRADA'
+                     SET WSS-FIN-CTAS-SI             TO TRUE
+                     PERFORM 300000-FINAL
+                WHEN WSC-40
+                     MOVE WSC-ACA0049                TO CAA-COD-AVISO1
+      *              'NUM DE CLIENTE INEXISTENTE'
+                     SET WSS-FIN-CTAS-SI             TO TRUE
+                     PERFORM 300000-FINAL
+                WHEN WSC-60
+                     MOVE WSC-ACE0042                TO CAA-COD-ERROR
+                     MOVE WSC-NOM-PE2C1520           TO CAA-VAR1-ERROR
+                     SET WSS-FIN-CTAS-SI             TO TRUE
+                     PERFORM 300000-FINAL
+                WHEN OTHER
+                     MOVE WSC-ACE0143                TO CAA-COD-ERROR
+      *              'ERROR DE SISTEMA'
+                     SET WSS-FIN-CTAS-SI             TO TRUE
+                     PERFORM 300000-FINAL
+              END-EVALUATE
+           ELSE
+              MOVE WSC-ACE0042                       TO CAA-COD-ERROR
+              MOVE WSC-NOM-PE2C1520                  TO CAA-VAR1-ERROR
+                                                        WSV-OBJETO
+              MOVE WSC-CALL-RUTINA                   TO WSV-REFERENCIA
+              PERFORM 999700-ABEND
+           END-IF
+           .
+      ******************************************************************
+      * 200131-LLENA-ARREGLO.                                          *
+      *                                                                *
+      ******************************************************************
+       200131-LLENA-ARREGLO.
+           MOVE WSC-1                 TO WSI-IND-ARREGLO
+           PERFORM UNTIL WSI-IND-CUENTAS > WSC-070 OR
+                         WSI-IND-ARREGLO > W151-NUMOCUR
+                IF W151-CODISER-T(WSI-IND-ARREGLO) > SPACES
+                   MOVE W151-CODISER-T(WSI-IND-ARREGLO) TO CTE-TIPO-CTA
+                   IF CTE-TIPO-CTA-OK
+                      SET WSV-CTA-NO-EXISTE    TO TRUE
+                      IF WSV-CTAS-SOLICI > 0
+                         PERFORM 200240-VERIF-CUENTA
+                      END-IF
+
+                      IF WSV-CTA-NO-EXISTE
+                         MOVE W151-CODISER-T(WSI-IND-ARREGLO)
+                                      TO WST-CODISER(WSI-IND-CUENTAS)
+                         MOVE W151-NUMECTA-T(WSI-IND-ARREGLO)
+                                      TO WST-NUMECTA(WSI-IND-CUENTAS)
+                         ADD WSC-1    TO WSI-IND-CUENTAS
+                      END-IF
+                   END-IF
+                   PERFORM 200132-LLENA-ULTIMA-RELACION
+                ELSE
+                   MOVE WSC-070       TO WSI-IND-ARREGLO
+                END-IF
+                ADD WSC-1             TO WSI-IND-ARREGLO
+           END-PERFORM
+           .
+      ******************************************************************
+      * 200240-VERIF-CUENTA.                                           *
+      *                                                                *
+      ******************************************************************
+       200240-VERIF-CUENTA.
+      *
+           SET WSV-CTA-NO-EXISTE                    TO TRUE
+           MOVE W151-CODISER-T(WSI-IND-ARREGLO)  TO WSV-CODISER
+           MOVE W151-NUMECTA-T(WSI-IND-ARREGLO)  TO WSV-NUM-CTA
+           MOVE 1                                TO WSI-IND-CUENTA2
+           PERFORM UNTIL WSI-IND-CUENTA2  >  WSC-1000
+                   IF WST-CUENTA-SOL(WSI-IND-CUENTA2) > SPACES
+                      IF WST-CUENTA-SOL(WSI-IND-CUENTA2) = WSV-CTA-CTE
+                         SET WSV-CTA-SI-EXISTE   TO TRUE
+                         MOVE WSC-1001           TO  WSI-IND-CUENTA2
+                      END-IF
+                   ELSE
+                      MOVE WSC-1001              TO WSI-IND-CUENTA2
+                   END-IF
+                   ADD WSC-1                     TO WSI-IND-CUENTA2
+           END-PERFORM
+           .
+      ******************************************************************
+      * 200132-LLENA-ULTIMA-RELACION.                                  *
+      *                                                                *
+      ******************************************************************
+       200132-LLENA-ULTIMA-RELACION.
+      *
+           MOVE W151-CODISER-T(WSI-IND-ARREGLO)      TO MSV-CODISER
+           MOVE W151-NUMECTA-T(WSI-IND-ARREGLO)      TO MSV-NUMECTA
+           MOVE W151-PECENTID-T(WSI-IND-ARREGLO)     TO MSV-PECENTID
+           MOVE W151-OFIAPE-T(WSI-IND-ARREGLO)       TO MSV-OFIAPE
+           MOVE W151-CLAINTER-T(WSI-IND-ARREGLO)     TO MSV-CLAINTER
+           MOVE W151-SECINTER-T(WSI-IND-ARREGLO)     TO MSV-SECINTER
+           .
+      ******************************************************************
+      *200300-ENVIA-CUENTAS.                                           *
+      *                                                                *
+      ******************************************************************
+       200300-ENVIA-CUENTAS.
+      *
+           IF WSS-MAS-DATOS-SI
+              MOVE WSC-S               TO WSI-IND-MAS-DAT
+           ELSE
+              MOVE WSC-N               TO WSI-IND-MAS-DAT
+           END-IF
+           IF WSV-ULT-RELACION > SPACES
+              MOVE SPACES                   TO WSV-SALIDA
+              MOVE WSI-IND-MAS-DAT          TO WSV-SALIDA(1:1)
+              MOVE WSV-ULT-RELACION         TO WSV-SALIDA(2:21)
+              MOVE LENGTH OF WSV-SALIDA     TO WSV-LONG-TS1
+              PERFORM 901000-ESCRIBE-TS1
+           END-IF
+           MOVE 1                           TO WSI-IND-CUENTA2
+           PERFORM UNTIL WSI-IND-CUENTA2 > WSC-070
+                IF WST-NUMECTA(WSI-IND-CUENTA2) > SPACES
+                   MOVE SPACES              TO WSV-CUENTA
+                   MOVE WST-CODISER(WSI-IND-CUENTA2) TO WSV-CUENTA(1:2)
+                   MOVE WST-NUMECTA(WSI-IND-CUENTA2) TO WSV-CUENTA(3:8)
+                   MOVE CAA-ENTIDAD                  TO MAER-ENTIDAD
+                   MOVE WSV-CUENTA                   TO MAER-CUENTA
+                   PERFORM 200320-OBTEN-DATOS-BGDTMAE
+                   PERFORM 200310-MUEVE-TIPO-CTA
+                   MOVE WS-CONCEPTO                  TO WSV-CONCEPTO
+                   MOVE LENGTH OF WSV-SALIDA         TO WSV-LONG-TS1
+                   PERFORM 901000-ESCRIBE-TS1
+                ELSE
+                   MOVE WSC-070                      TO  WSI-IND-CUENTA2
+                END-IF
+                ADD 1                                TO WSI-IND-CUENTA2
+           END-PERFORM
+           .
+      ******************************************************************
+      * 200320-OBTEN-DATOS-BGDTMAE.                                    *
+      *                                                                *
+      ******************************************************************
+       200320-OBTEN-DATOS-BGDTMAE.
+      *
+           EXEC SQL
+               SELECT MAE_DIVISA
+               INTO   :MAER-DIVISA
+               FROM  BGDTMAE
+               WHERE  MAE_ENTIDAD     = :MAER-ENTIDAD
+                 AND  MAE_CUENTA      = :MAER-CUENTA
+           END-EXEC
+      *
+           EVALUATE SQLCODE
+             WHEN ZERO
+                  MOVE MAER-DIVISA     TO WSV-DIVISA
+             WHEN +100
+                  MOVE WSC-MXP         TO WSV-DIVISA
+                  SET WSS-ENC-MAE-NO   TO TRUE
+             WHEN OTHER
+                  MOVE WSC-MXP         TO WSV-DIVISA
+                  SET WSS-ENC-MAE-NO   TO TRUE
+           END-EVALUATE
+           .
+      ******************************************************************
+      * 200310-MUEVE-TIPO-CTA.                                         *
+      *                                                                *
+      ******************************************************************
+       200310-MUEVE-TIPO-CTA.
+      *
+           MOVE WSV-CUENTA(1:2)             TO WSV-TIPO-CTA
+           EVALUATE WSV-TIPO-CTA
+             WHEN WSC-ALF-01
+             WHEN WSC-ALF-04
+                  MOVE CTE-DESC-CHEQUES     TO WS-CONCEPTO
+             WHEN WSC-ALF-11
+             WHEN WSC-ALF-12
+             WHEN WSC-ALF-14
+             WHEN WSC-ALF-26
+             WHEN WSC-ALF-27
+             WHEN WSC-ALF-28
+             WHEN WSC-ALF-29
+                  MOVE CTE-DESC-AHORRO      TO WS-CONCEPTO
+             WHEN WSC-ALF-13
+                  MOVE CTE-DESC-INVER       TO WS-CONCEPTO
+             WHEN WSC-ALF-20
+                  MOVE CTE-DESC-FONDOS      TO WS-CONCEPTO
+             WHEN WSC-ALF-96
+             WHEN WSC-ALF-97
+             WHEN WSC-ALF-98
+             WHEN WSC-ALF-99
+                  MOVE CTE-DESC-CARTERA     TO WS-CONCEPTO
+             WHEN WSC-ALF-21
+                  MOVE CTE-DESC-PATRIMO     TO WS-CONCEPTO
+             WHEN WSC-ALF-22
+                  MOVE CTE-DESC-BURSATIL    TO WS-CONCEPTO
+             WHEN OTHER
+                  MOVE WSC-ERR-CTA          TO WS-CONCEPTO
+           END-EVALUATE
+           .
+      ******************************************************************
+      * 300000-FINAL.                                                  *
+      *                                                                *
+      ******************************************************************
+       300000-FINAL.
+      *
+           IF WSA-CTAS-GRAB > 0
+              MOVE WSC-P               TO CAA-IND-PANDOC(1)
+              MOVE WSC-PF1             TO CAA-DESTINO(1)
+              MOVE WSC-ALF-1           TO CAA-NUM-DOCUM(1)
+              MOVE WSC-ALF-01          TO CAA-PRILIN-DOCUM(1)
+           END-IF
+      *
+           EXEC CICS
+                RETURN
+           END-EXEC
+           .
+      ******************************************************************
+      * 901000-ESCRIBE-TS1.                                            *
+      *                                                                *
+      ******************************************************************
+       901000-ESCRIBE-TS1.
+      *
+           MOVE WSC-PF1                TO WSV-NOMTS-PREFIJO
+           MOVE CAA-TERMINAL           TO WSV-NOMTS-SUFIJO
+      *
+           EXEC CICS
+                WRITEQ TS QUEUE(WTS-NOMTS)
+                FROM(WSV-SALIDA)
+                LENGTH(WSV-LONG-TS1)
+                MAIN NOHANDLE
+           END-EXEC
+      *
+           EVALUATE  EIBRESP
+              WHEN (DFHRESP(NORMAL))
+                  ADD 1                       TO WSA-CTAS-GRAB
+              WHEN (DFHRESP(QIDERR))
+                  CONTINUE
+              WHEN OTHER
+                  MOVE WSC-WRITE-TS           TO WSV-REFERENCIA
+                  PERFORM 999700-ABEND
+           END-EVALUATE
+           .
+      ******************************************************************
+      * 999700-ABEND.                                                  *
+      *                                                                *
+      ******************************************************************
+       999700-ABEND.
+      *
+           INITIALIZE           QGECABC
+           MOVE EIBFN           TO ABC-EIBFN
+                                   CAA-EIBFN
+           MOVE EIBRSRCE        TO ABC-EIBRSRCE
+                                   CAA-EIBRSRCE
+           MOVE EIBRCODE        TO ABC-EIBRCODE
+                                   CAA-EIBRCODE
+           MOVE EIBRESP         TO ABC-EIBRESP1
+                                   CAA-EIBRESP1
+           MOVE EIBRESP2        TO ABC-EIBRESP2
+                                   CAA-EIBRESP2
+           PERFORM 999900-ERROR-SISTEMA
+           .
+      ******************************************************************
+      * 999900-ERROR-SISTEMA.                                          *
+      *                                                                *
+      ******************************************************************
+       999900-ERROR-SISTEMA.
+      *
+           MOVE WSC-N                        TO ABC-ABEND
+           MOVE WSC-PROGRAMA                 TO ABC-PROGRAMA
+           MOVE WSV-REFERENCIA               TO ABC-REFERENCIA
+           EXEC CICS
+                LINK PROGRAM (WSC-QG1CABC)
+                COMMAREA (QGECABC)
+           END-EXEC
+           PERFORM 300000-FINAL
+           .
+      ******************************************************************
+      *                                                                *
+      *               F I N    D E L   P R O G R A M A                 *
+      *                                                                *
+      ******************************************************************
