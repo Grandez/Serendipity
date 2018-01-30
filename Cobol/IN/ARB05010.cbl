@@ -2,7 +2,7 @@
       *> SDP IVP 0 SDPAnalyzer.getRC = 0 - CALL CALLED EMPTY
 
        IDENTIFICATION DIVISION.
-       PROGRAM-ID. GRF02100.
+       PROGRAM-ID. ARB05010.
        AUTHOR. USRIVP0 - IVP
        DATE-COMPILED. 01/01/2001
 
@@ -16,4 +16,5 @@
 
        PROCEDURE DIVISION.
            ADD 1 TO NUM01. 
+           IF NUM01 > 3 CALL 'ARB05300'.
         

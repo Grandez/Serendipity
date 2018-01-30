@@ -1,8 +1,8 @@
-      *> SDP DESC Grafo CALL vacio
-      *> SDP IVP 0 SDPAnalyzer.getRC = 0 - Grafo CALL vacio
+      *> SDP DESC Grafo CALL CALLED EMPTY
+      *> SDP IVP 0 SDPAnalyzer.getRC = 0 - CALL CALLED EMPTY
 
        IDENTIFICATION DIVISION.
-       PROGRAM-ID. GRF01000.
+       PROGRAM-ID. ARB04010.
        AUTHOR. USRIVP0 - IVP
        DATE-COMPILED. 01/01/2001
 
