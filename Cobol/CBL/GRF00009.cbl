@@ -1,5 +1,7 @@
-      *> SDP DESC Grafo IF BASICO
-      *> SDP IVP 0 SDPAnalyzer.getRC = 0 - Grafo IF simple
+      *> SDP DESC Grafo IF - ENDIF
+      *> SDP IVP 0 Graph.NumGraphs = 6 - Grafo IF - ENDIF
+      *> SDP IVP 0 Graph.NumNodes  = 7 - Grafo IF - ENDIF
+
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID. GRF00009.

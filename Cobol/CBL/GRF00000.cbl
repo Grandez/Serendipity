@@ -1,5 +1,5 @@
-      *> SDP DESC Grafo PERFORM UNTIL
-      *> SDP IVP 0 SDPAnalyzer.getRC = 0 - Grafo IF simple
+      *> SDP DESC Grafo IF - ELSE simple 1
+      *> SDP IVP 0 Graph.numGraphs = 6 - Grafos
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID. GRF00000.
@@ -17,7 +17,14 @@
        PROCEDURE DIVISION.
        INICIO.
            PERFORM 000-INICIO.
-           PERFORM 010-PROCESO UNTIL NUM01 > 5
+           
+           IF NUM01 > 3 THEN 
+              PERFORM PROCESO-2
+           ELSE 
+              ADD 1 TO NUM01
+           END-IF
+           
+           PERFORM 010-PROCESO.
            PERFORM 999-FIN.
            
        000-INICIO.
@@ -36,4 +43,4 @@
            GOBACK.
 
  
-        
+       

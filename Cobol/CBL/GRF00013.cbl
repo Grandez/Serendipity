@@ -1,8 +1,10 @@
-      *> SDP DESC Grafo IF simple
-      *> SDP IVP 0 SDPAnalyzer.getRC = 0 - Grafo IF simple
+      *> SDP DESC Grafo IF IF END-IF END-IF
+      *> SDP IVP 0 Graph.numGraphs = 7 - Grafo IF IF END-IF END-IF
+      *> SDP IVP 0 Graph.NumNodes  = 7 - Grafo IF IF END-IF END-IF
+
 
        IDENTIFICATION DIVISION.
-       PROGRAM-ID. GRF00008.
+       PROGRAM-ID. GRF00013.
        AUTHOR. USRIVP0 - IVP
        DATE-COMPILED. 01/01/2001
 
@@ -17,9 +19,13 @@
        PROCEDURE DIVISION.
        INICIO.
            PERFORM 000-INICIO.
-           IF NUM01 > 3 THEN PERFORM PROCESO-1.
-           PERFORM 010-PROCESO.
-           PERFORM 999-FIN.
+           
+           IF NUM01 > 3 THEN 
+              IF NUM02 > 2 THEN
+                 PERFORM PROCESO-2
+              END-IF   
+              PERFORM PROCESO-3
+           END-IF
            
        000-INICIO.
            ADD 1 TO NUM01.
@@ -29,9 +35,15 @@
 
        PROCESO-1.
            ADD 1 TO NUM01.
+
+       PROCESO-2.
+           ADD 1 TO NUM01.
+
+       PROCESO-3.
+           ADD 1 TO NUM01.
            
        999-FIN.
            GOBACK.
 
  
-      
+         

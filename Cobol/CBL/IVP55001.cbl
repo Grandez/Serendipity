@@ -1,5 +1,5 @@
       *> SDP DESC SQL SET
-      *> SDP IVP 0 Issues.getCount = 1 - SET no permitido
+      *> SDP IVP 0 Issues.Count = 1 - SET no permitido
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID.    IVP55001.

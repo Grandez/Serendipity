@@ -1,5 +1,7 @@
-      *> SDP DESC Grafo EVALUATE simple 
-      *> SDP IVP 0 Graph.numGraphs = 1 - EVALUATE simple
+      *> SDP DESC Grafo EVALUATE END-EVALUATE simple 
+      *> SDP IVP 0 Graph.numGraphs = 1 - Grafo EVALUATE END-EVALUATE simple 
+      *> SDP IVP 0 Graph.NumNodes  = 7 - Grafo EVALUATE END-EVALUATE simple 
+
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID. GRF00030.

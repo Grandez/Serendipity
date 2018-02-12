@@ -1,5 +1,7 @@
       *> SDP DESC Grafo PERFORM UNTIL
-      *> SDP IVP 0 SDPAnalyzer.getRC = 0 - Grafo IF simple
+      *> SDP IVP 0 Graph.numGraphs = 6 - Grafo PERFORM UNTIL
+      *> SDP IVP 0 Graph.NumNodes  = 5 - Grafo PERFORM UNTIL
+      
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID. GRF00021.

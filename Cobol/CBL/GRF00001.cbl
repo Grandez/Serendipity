@@ -1,5 +1,6 @@
       *> SDP DESC Grafo vacio
-      *> SDP IVP 0 SDPAnalyzer.getRC = 0 - Grafo vacio
+      *> SDP IVP 0 Graph.NumGraphs = 1 - Grafo simple
+      *> SDP IVP 0 Graph.NumNodes  = 3 - Grafo ssimple
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID. GRF00001.

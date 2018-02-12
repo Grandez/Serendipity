@@ -1,5 +1,6 @@
       *> SDP DESC Grafos
-      *> SDP IVP 0 SDPAnalyzer.getRC = 0 - Grafo Parrafo inicio y GOBACK
+      *> SDP IVP 0 Graph.NumGraphs = 1 - Grafo Parrafo inicio y GOBACK
+      *> SDP IVP 0 Graph.NumNodes  = 3 - Grafo Parrafo inicio y GOBACK      
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID. GRF00004.

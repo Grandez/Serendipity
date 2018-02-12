@@ -1,8 +1,10 @@
-      *> SDP DESC Grafo IF - ELSE basico
-      *> SDP IVP 0 SDPAnalyzer.getRC = 0 - Grafo IF simple
+      *> SDP DESC Grafo IF - ELSE - ENDIF PERFORM
+      *> SDP IVP 0 Graph.numGraphs = 7 - Grafo IF - ELSE - ENDIF PERFORM
+      *> SDP IVP 0 Graph.NumNodes  = 8 - Grafo IF - ELSE - ENDIF PERFORM
+
 
        IDENTIFICATION DIVISION.
-       PROGRAM-ID. GRF00011.
+       PROGRAM-ID. GRF00012.
        AUTHOR. USRIVP0 - IVP
        DATE-COMPILED. 01/01/2001
 

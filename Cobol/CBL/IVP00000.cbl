@@ -1,5 +1,5 @@
       *> SDP DESC Programa sin parrafos
-      *> SDP IVP 0 SDPAnalyzer.getRC = 0 - Caso simple RC 0
+      *> SDP IVP 0 RC = 0 - Caso simple RC 0
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID. IVP00000.

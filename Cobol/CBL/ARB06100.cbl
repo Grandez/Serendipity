@@ -14,6 +14,10 @@
            03 NUM02 PIC 9(03) VALUE 1.
            03 NUM03 PIC 9(03) VALUE ZEROS.
 
+       LINKAGE SECTION.
+
+       01 DFHCOMMAREA PIC X(100).
+
        PROCEDURE DIVISION.
            ADD 1 TO NUM01. 
            

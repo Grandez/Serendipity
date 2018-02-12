@@ -1,5 +1,7 @@
       *> SDP DESC Grafos
-      *> SDP IVP 0 SDPAnalyzer.getRC = 0 - Grafo simple sin inicio 2
+      *> SDP IVP 0 Graph.NumGraphs = 4 - Grafo simple sin inicio 2
+      *> SDP IVP 0 Graph.NumNodes  = 5 - Grafo simple sin inicio 2
+
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID. GRF00007.

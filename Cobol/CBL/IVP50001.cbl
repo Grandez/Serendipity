@@ -1,7 +1,7 @@
       *> SDP DESC TABS en DATA DIVISION
-      *> SDP IVP 0 Issues.getCount = 1 - Caracter de tabulacion en DATA
-      *> SDP IVP 1 Issues.getCount = 0 - Anulacion TAB a nivel Item
-      *> SDP IVP 2 Issues.getCount = 0 - Anulacion TAB a nivel Rule
+      *> SDP IVP 0 Issues.Count = 1 - Caracter de tabulacion en DATA
+      *> SDP IVP 1 Issues.Count = 0 - Anulacion TAB a nivel Item
+      *> SDP IVP 2 Issues.Count = 0 - Anulacion TAB a nivel Rule
       
        IDENTIFICATION DIVISION.
        PROGRAM-ID. IVP50001.
