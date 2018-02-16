@@ -1,14 +1,15 @@
-      *> SDP DESC Sin autor
-      *> SDP IVP 0 Issues.Count = 1 - Sin autor
+      *> SDP DESC CONFIGURATION-SECTION SOURCE-COMPUTER
+      *> SDP IVP 0 Issues.Count = 1 - SOURCE-COMPUTER
 
        IDENTIFICATION DIVISION.
-       PROGRAM-ID.    IVP50031.
-      *AUTHOR.        USRIVP0 - SERENDIPITY
-      *INSTALLATION.  PRUEBAS
-      *DATE-WRITTEN.  01/01/01
-       DATE-COMPILED. 01/01/01
-      *SECURITY.      DATOS SEGURIDAD
+       PROGRAM-ID.    IVP51001.
+       AUTHOR.        USRIVP0 - SERENDIPITY
 
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       
+       SOURCE-COMPUTER. ZOS.
+       
        DATA DIVISION.
        WORKING-STORAGE SECTION.
        
@@ -21,4 +22,4 @@
        INICIO.
            COMPUTE NUM03 = NUM01 + NUM02.
            GOBACK. 
- 
+    

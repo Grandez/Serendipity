@@ -1,6 +1,6 @@
       *> SDP DESC Grafo vacio
       *> SDP IVP 0 Graph.NumGraphs = 1 - Grafo simple
-      *> SDP IVP 0 Graph.NumNodes  = 3 - Grafo ssimple
+      *> SDP IVP 0 Graph.NumNodes  = 3 
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID. GRF00001.

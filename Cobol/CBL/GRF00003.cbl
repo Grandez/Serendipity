@@ -1,6 +1,6 @@
       *> SDP DESC Grafos
       *> SDP IVP 0 Graph.NumGraphs = 1 - Grafo Parrafo inicio
-      *> SDP IVP 0 Graph.NumNodes  = 3 - Grafo Parrafo inicio
+      *> SDP IVP 0 Graph.NumNodes  = 3 
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID. GRF00003.

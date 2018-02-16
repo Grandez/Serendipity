@@ -1,5 +1,5 @@
       *> SDP DESC Grafo IF - ELSE simple 1
-      *> SDP IVP 0 Graph.numGraphs = 6 - Grafos
+      *> SDP IVP 0 Graph.NumGraphs = 6 - Grafos
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID. GRF00000.

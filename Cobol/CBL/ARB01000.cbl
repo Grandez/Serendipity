@@ -1,5 +1,5 @@
-      *> SDP DESC Grafo CALL vacio
-      *> SDP IVP 0 SDPAnalyzer.getRC = 0 - Grafo CALL vacio
+      *> SDP DESC Arbol CALL vacio
+      *> SDP IVP 0 RC = 0 - Arbol CALL vacio
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID. ARB01000.

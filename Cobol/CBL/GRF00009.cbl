@@ -1,6 +1,6 @@
       *> SDP DESC Grafo IF - ENDIF
       *> SDP IVP 0 Graph.NumGraphs = 6 - Grafo IF - ENDIF
-      *> SDP IVP 0 Graph.NumNodes  = 7 - Grafo IF - ENDIF
+      *> SDP IVP 0 Graph.NumNodes  = 7 
 
 
        IDENTIFICATION DIVISION.

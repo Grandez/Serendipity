@@ -1,6 +1,6 @@
       *> SDP DESC Grafos
       *> SDP IVP 0 Graph.NumGraphs = 4 - Grafo simple sin inicio 2
-      *> SDP IVP 0 Graph.NumNodes  = 5 - Grafo simple sin inicio 2
+      *> SDP IVP 0 Graph.NumNodes  = 5 
 
 
        IDENTIFICATION DIVISION.

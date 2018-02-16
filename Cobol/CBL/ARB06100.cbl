@@ -1,5 +1,5 @@
-      *> SDP DESC Grafo CALL Recursivo estatico
-      *> SDP IVP 0 SDPAnalyzer.getRC = 0 - CALL Recursivo estatico
+      *> SDP DESC Arbol CALL Recursivo estatico
+      *> SDP IVP 0 RC = 0 - CALL Recursivo estatico
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID. ARB06100.

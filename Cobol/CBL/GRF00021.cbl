@@ -1,6 +1,6 @@
       *> SDP DESC Grafo PERFORM UNTIL
-      *> SDP IVP 0 Graph.numGraphs = 6 - Grafo PERFORM UNTIL
-      *> SDP IVP 0 Graph.NumNodes  = 5 - Grafo PERFORM UNTIL
+      *> SDP IVP 0 Graph.NumGraphs = 6 - Grafo PERFORM UNTIL
+      *> SDP IVP 0 Graph.NumNodes  = 5 
       
 
        IDENTIFICATION DIVISION.

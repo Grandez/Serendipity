@@ -1,6 +1,6 @@
       *> SDP DESC Grafo IF - ELSE - ENDIF PERFORM
-      *> SDP IVP 0 Graph.numGraphs = 7 - Grafo IF - ELSE - ENDIF PERFORM
-      *> SDP IVP 0 Graph.NumNodes  = 8 - Grafo IF - ELSE - ENDIF PERFORM
+      *> SDP IVP 0 Graph.NumGraphs = 7 - Grafo IF - ELSE - ENDIF PERFORM
+      *> SDP IVP 0 Graph.NumNodes  = 8 
 
 
        IDENTIFICATION DIVISION.

@@ -1,4 +1,4 @@
-      *> SDP DESC Grafo LINK Dinamico simple
+      *> SDP DESC Arbol LINK Dinamico simple
       *> SDP IVP 0 Calls.Count = 1 - LINK Dinamico simple
 
        IDENTIFICATION DIVISION.

@@ -1,7 +1,6 @@
       *> SDP DESC Grafo IF simple
-      *> SDP IVP 0 SDPAnalyzer.getRC = 0 - Grafo IF simple
       *> SDP IVP 0 Graph.NumGraphs = 5 - Grafo IF con punto
-      *> SDP IVP 0 Graph.NumNodes  = 7 - Grafo IF con punto
+      *> SDP IVP 0 Graph.NumNodes  = 7 
       
 
        IDENTIFICATION DIVISION.

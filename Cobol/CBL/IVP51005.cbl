@@ -1,14 +1,16 @@
-      *> SDP DESC Sin autor
-      *> SDP IVP 0 Issues.Count = 1 - Sin autor
+      *> SDP DESC CONFIGURATION SECTION Multilines
+      *> SDP IVP 0 Issues.Count = 1 - Multilines
 
        IDENTIFICATION DIVISION.
-       PROGRAM-ID.    IVP50031.
-      *AUTHOR.        USRIVP0 - SERENDIPITY
-      *INSTALLATION.  PRUEBAS
-      *DATE-WRITTEN.  01/01/01
-       DATE-COMPILED. 01/01/01
-      *SECURITY.      DATOS SEGURIDAD
+       PROGRAM-ID.    IVP51005.
+       AUTHOR.        USRIVP0 - SERENDIPITY
 
+       ENVIRONMENT DIVISION.
+       CONFIGURATION SECTION.
+       SPECIAL-NAMES.
+           DECIMAL-POINT 
+                          IS COMMA.
+       
        DATA DIVISION.
        WORKING-STORAGE SECTION.
        
@@ -21,4 +23,4 @@
        INICIO.
            COMPUTE NUM03 = NUM01 + NUM02.
            GOBACK. 
- 
+      

@@ -1,6 +1,6 @@
       *> SDP DESC Grafo EVALUATE - OTHER - END-EVALUATE simple 
-      *> SDP IVP 0 Graph.numGraphs = 1 - Grafo EVALUATE - OTHER - END-EVALUATE simple 
-      *> SDP IVP 0 Graph.NumNodes  = 8 - Grafo EVALUATE - OTHER - END-EVALUATE simple 
+      *> SDP IVP 0 Graph.NumGraphs = 1 - Grafo EVALUATE - OTHER - END-EVALUATE simple 
+      *> SDP IVP 0 Graph.NumNodes  = 8 
 
 
        IDENTIFICATION DIVISION.

@@ -1,5 +1,5 @@
-      *> SDP DESC Grafo CALL estatico nivel 2
-      *> SDP IVP 0 SDPAnalyzer.getRC = 0 - CALL estatico nivel 2
+      *> SDP DESC Arbol CALL estatico nivel 2
+      *> SDP IVP 0 RC = 0 - CALL estatico nivel 2
 
        IDENTIFICATION DIVISION.
        PROGRAM-ID. ARB05300.
