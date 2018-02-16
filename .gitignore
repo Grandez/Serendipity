@@ -1,3 +1,7 @@
+# System files #
+###################
+.*
+
 # Compiled source #
 ###################
 *.com
